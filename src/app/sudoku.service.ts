@@ -1,46 +1,52 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
+
 import { generateSudoku, validateSudoku } from 'sudoku-logic';
 import { Sudoku } from './types';
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class SudokuService {
 
-  private startingSudoku = new BehaviorSubject<Sudoku>(generateSudoku());
+  public startingSudoku = generateSudoku();
 
-  private sudoku = this.startingSudoku;
+  private sudoku = new BehaviorSubject<Sudoku>(JSON.parse(JSON.stringify(this.startingSudoku)));
 
-  public isValid = new Observable<boolean>()
+  public isValid = new BehaviorSubject<boolean>(false);
 
-  constructor() { 
-
-    this.sudoku.subscribe(board => {
-      if (this.isSudokuFilled(board)) {
-        this.checkSudokuValidity(board)
-      }
-    })
-
+  constructor() {
+    this.sudoku.asObservable().subscribe(this.observer)
   }
 
-  public getSudoku = () => this.sudoku.asObservable();
-  
-  private updateCell = (row: number, col: number, value: (number | undefined) = undefined) => {
-    if (this.notStarterCell(row, col)) {
-      const updated = this.sudoku.value;
-      updated[row][col] = value;
-      this.sudoku.next(updated);
+  public updateCell = (row: number, col: number, inputValue: string) => {
+    const updatedSudoku = this.sudoku.value;
+    const value = this.convertInputValue(inputValue)
+    
+    updatedSudoku[row][col] = value;
+    
+    this.sudoku.next(updatedSudoku);
+    console.log(this.sudokuIsFilled(updatedSudoku))
+  }
+
+  private convertInputValue = (input: string): (number | undefined) => {
+    return input === "" ?
+      undefined
+      :
+      Number(input)
+  }
+
+  private observer = {
+    next: ( sudoku: Sudoku ) => {
+      if (this.sudokuIsFilled(sudoku) && this.checkSudokuValidity(sudoku)) {
+        console.log(sudoku)
+        this.isValid.next(true)
+      }
     }
   }
 
-  public passNumberToCell = (num: number, row: number, col: number) => this.updateCell(row, col, num);
-
-  public deleteNumberFromCell = (row: number, col: number) => this.updateCell(row, col);
-
-  private notStarterCell = (row: number, col: number) => this.startingSudoku.value[row][col] === undefined;
-
-  private isSudokuFilled = (sudoku: Sudoku) => sudoku.flat().filter(cell => cell === undefined).length;
+  private sudokuIsFilled = (sudoku: Sudoku) => sudoku.flat().filter(cell => cell == (undefined || null)).length === 0;
 
   private checkSudokuValidity = (sudoku: Sudoku) => validateSudoku(sudoku);
 

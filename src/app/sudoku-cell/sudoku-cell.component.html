@@ -1,6 +1,6 @@
   <span *ngIf="number">{{ number }}</span>
   <input 
     *ngIf="!number"
-    (input)="updateCellValue($event)"
+    (input)="handleInput($event)"
     type="number" 
     >

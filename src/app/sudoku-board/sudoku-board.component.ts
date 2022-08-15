@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { SudokuService } from '../sudoku.service';
-import { Sudoku } from '../types';
 
 @Component({
   selector: 'app-sudoku-board',
@@ -9,15 +8,14 @@ import { Sudoku } from '../types';
 })
 export class SudokuBoardComponent implements OnInit {
 
-  public sudoku: any;
+  public sudoku = this.gameService.startingSudoku;
 
   constructor(
-    private sudokuService : SudokuService
-  ) { }
-
+    private gameService : SudokuService
+  ) { 
+  }
+  
   ngOnInit(): void {
-    this.sudokuService.getSudoku().subscribe(sudoku => this.sudoku = sudoku)
-    console.log(this.sudoku)
   }
 
 }

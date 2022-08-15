@@ -9,7 +9,8 @@ import { SudokuService } from '../sudoku.service';
 export class SudokuCellComponent implements OnInit {
 
   @Input () number: number|undefined = undefined;
-
+  @Input () row!: number;
+  @Input () column!: number;
 
   constructor(
     private gameService: SudokuService
@@ -18,24 +19,21 @@ export class SudokuCellComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  // handle input to RULE THEM ALL!!!!
-
-  // validate input to 1-9
-
-  public updateCellValue (input: Event) {
+  public handleInput (input: Event) {
     const inputField = (input.target as HTMLInputElement);
     const inputValue = inputField.value;
     const lastInputValue = inputValue[inputValue.length - 1];
 
-    if (lastInputValue == "0") {
-      inputField.value = ""
-    } else {
-      inputField.value = lastInputValue
-    }
+    inputField.value = this.convertValue(lastInputValue);
 
-    return Number(inputField.value)
+    this.gameService.updateCell(this.row, this.column, inputField.value);
   }
-
-  // update sudoku via sudokuService
+  
+  private convertValue = (input: string) => {
+    return input === "0" ?
+    ""
+    :
+    input
+  }
 
 }
