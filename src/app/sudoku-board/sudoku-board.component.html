@@ -1,0 +1,9 @@
+<main class="board-wrapper">
+  <div 
+    *ngFor="let row of sudoku; index as i;"
+    class="row">
+    <span *ngFor="let cell of sudoku[i], index as j" class="cell-wrapper">
+      <app-sudoku-cell [number]="sudoku[i][j]"></app-sudoku-cell>
+    </span>
+  </div>
+</main>

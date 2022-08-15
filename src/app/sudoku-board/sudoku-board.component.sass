@@ -1,0 +1,42 @@
+:host
+  padding: 2rem
+  display: flex
+
+  
+.board-wrapper
+  margin: auto
+  max-width: 600px
+  
+.row 
+  display: flex
+  // wider border for squares
+  &:first-child
+    border-top: 2px solid #000
+    
+  &:nth-child(-3n + 6) 
+    border-bottom: 1px solid #000
+    
+  &:last-child 
+    border-bottom: 2px solid #000
+
+.cell-wrapper
+  width: 9vw
+  height: 9vw
+  border: 0.25px solid #555
+  display: flex
+  justify-content: center
+  align-items: center
+
+  // wider border for squares
+  &:first-child
+    border-left: 3px solid #000
+  
+  &:nth-child(-3n + 6) 
+    border-right-color: #000   
+    border-right-width: 2px   
+
+  &:last-child
+    border-right: 3px solid #000
+
+  > *
+    flex: 1
