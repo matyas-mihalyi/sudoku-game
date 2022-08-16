@@ -44,11 +44,7 @@ export class SudokuCellComponent implements OnInit, AfterViewInit {
     input
   }
 
-  handleNavigation (input: KeyboardEvent) {
-
-  }
-
-  private disableArrowKeyInput = (event: KeyboardEvent) => {
+  public disableArrowKeyInput = (event: KeyboardEvent) => {
     if (event.key === "ArrowUp" || event.key === "ArrowDown") {
       event.preventDefault();
     }   

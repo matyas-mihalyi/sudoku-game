@@ -3,7 +3,7 @@
     #cell
     *ngIf="!number"
     (input)="handleInput($event)"
+    (keydown)="disableArrowKeyInput($event)"
     (focus)="sendIndices.emit({row, column})"
-    (blur)="true"
     type="number" 
     >
