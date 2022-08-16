@@ -1,3 +1,5 @@
+@use '../mixins'
+
 :host
   padding: 2rem
   display: flex
@@ -6,37 +8,50 @@
 .board-wrapper
   margin: auto
   max-width: 600px
+  max-height: 600px
   
 .row 
   display: flex
+
+  .cell-wrapper
+    width: min(9vw, 70px)
+    height: min(9vw, 70px)
+    border: mixins.$light-border
+    display: flex
+    justify-content: center
+    align-items: center
+
+    &:first-child
+      border-left: mixins.$strong-border
+    
+    &:nth-child(-3n + 6) 
+      border-right: mixins.$strong-border   
+
+    &:nth-child(3n + 4) 
+      border-left: none
+
+    &:last-child
+      border-right: mixins.$strong-border
+
+    > *
+      flex: 1
+      
   // wider border for squares
   &:first-child
-    border-top: 2px solid #000
+    border-top: mixins.$strong-border
+    .cell-wrapper
+      border-top: none
     
   &:nth-child(-3n + 6) 
-    border-bottom: 1px solid #000
+    border-bottom: mixins.$strong-border
+    .cell-wrapper
+      border-bottom: none
+  
+  &:nth-child(-3n + 7) 
+    .cell-wrapper
+      border-top: none
     
   &:last-child 
-    border-bottom: 2px solid #000
-
-.cell-wrapper
-  width: 9vw
-  height: 9vw
-  border: 0.25px solid #555
-  display: flex
-  justify-content: center
-  align-items: center
-
-  // wider border for squares
-  &:first-child
-    border-left: 3px solid #000
-  
-  &:nth-child(-3n + 6) 
-    border-right-color: #000   
-    border-right-width: 2px   
-
-  &:last-child
-    border-right: 3px solid #000
-
-  > *
-    flex: 1
+    border-bottom: mixins.$strong-border
+    .cell-wrapper
+      border-bottom: none
