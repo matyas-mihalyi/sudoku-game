@@ -1,4 +1,4 @@
-import { Component, OnInit, QueryList, ViewChildren, AfterViewInit } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { SudokuService } from '../sudoku.service';
 import { ArrayOf9Elements, CellIndices, Direction, Sudoku } from '../types';
 
@@ -7,7 +7,7 @@ import { ArrayOf9Elements, CellIndices, Direction, Sudoku } from '../types';
   templateUrl: './sudoku-board.component.html',
   styleUrls: ['./sudoku-board.component.sass']
 })
-export class SudokuBoardComponent implements OnInit, AfterViewInit {
+export class SudokuBoardComponent implements OnInit {
 
   public sudoku = this.gameService.startingSudoku;
 
@@ -23,10 +23,15 @@ export class SudokuBoardComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
   }
 
-  ngAfterViewInit(): void {
-    const index = this.findCellIndexUp(5, 4);
-    console.log(this.children.toArray()[index])
-    this.children.toArray()[index].applyFocus()
+  handleNavigation = (e: KeyboardEvent) => {
+    if (this.isArrowKey(e)) {
+      this.focusNextCell(e, this.focusedCellIndices.row, this.focusedCellIndices.column)
+    }
+  }
+
+  isArrowKey (e: KeyboardEvent) {
+    const arrowKeys = ["ArrowUp", "ArrowRight", "ArrowDown", "ArrowLeft"]
+    return arrowKeys.some(key => e.key === key);  
   }
 
   updateFocusedCell (newIndices: CellIndices) {
@@ -38,7 +43,6 @@ export class SudokuBoardComponent implements OnInit, AfterViewInit {
     this.children.toArray()[index].removeFocus();
   }
 
-  // receive row and column index -> find next element
   focusNextCell (event: KeyboardEvent , currentRow:number, currentCol:number) {
     const nextCellIndex = this.findNextCellIndex[event.key as Direction](currentRow, currentCol);
     const nextCell = this.children.toArray()[nextCellIndex];
@@ -98,7 +102,6 @@ export class SudokuBoardComponent implements OnInit, AfterViewInit {
     
   getPreviousAvailableIndex = (arr: number[], currentIndex: number): number => {
     const previousIndexInArray = arr.indexOf(currentIndex) - 1 >= 0 ? arr.indexOf(currentIndex) - 1 : arr.length -1;
-    console.log("arr.indexOf(currentIndex)", arr.indexOf(currentIndex));
     const previousElementInArray = arr[previousIndexInArray]; 
     return previousElementInArray;
   }

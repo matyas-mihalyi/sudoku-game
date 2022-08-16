@@ -1,4 +1,9 @@
-<main class="board-wrapper" *ngIf="sudoku">
+<main 
+  *ngIf="sudoku"
+  (keydown)="handleNavigation($event)"
+  class="board-wrapper" 
+  >
+  
   <div 
     *ngFor="let row of sudoku; index as i;"
     class="row">
@@ -12,4 +17,5 @@
       ></app-sudoku-cell>
     </span>
   </div>
+
 </main>
