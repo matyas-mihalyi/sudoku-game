@@ -1,6 +1,6 @@
 import { Component, OnInit, QueryList, ViewChildren, AfterViewInit } from '@angular/core';
 import { SudokuService } from '../sudoku.service';
-import { ArrayOf9Elements, direction, Sudoku } from '../types';
+import { ArrayOf9Elements, CellIndices, Direction, Sudoku } from '../types';
 
 @Component({
   selector: 'app-sudoku-board',
@@ -10,6 +10,8 @@ import { ArrayOf9Elements, direction, Sudoku } from '../types';
 export class SudokuBoardComponent implements OnInit, AfterViewInit {
 
   public sudoku = this.gameService.startingSudoku;
+
+  private focusedCellIndices: CellIndices = { row: -1, column: -1 }
 
   @ViewChildren("children") children!: QueryList<any>
 
@@ -27,10 +29,18 @@ export class SudokuBoardComponent implements OnInit, AfterViewInit {
     this.children.toArray()[index].applyFocus()
   }
 
+  updateFocusedCell (newIndices: CellIndices) {
+    this.focusedCellIndices = newIndices;
+  }
+
+  blurCurrentCell () {
+    const index = this.focusedCellIndices.row * this.focusedCellIndices.column;
+    this.children.toArray()[index].removeFocus();
+  }
 
   // receive row and column index -> find next element
   focusNextCell (event: KeyboardEvent , currentRow:number, currentCol:number) {
-    const nextCellIndex = this.findNextCellIndex[event.key as direction](currentRow, currentCol);
+    const nextCellIndex = this.findNextCellIndex[event.key as Direction](currentRow, currentCol);
     const nextCell = this.children.toArray()[nextCellIndex];
     nextCell.applyFocus();
   }

@@ -8,6 +8,7 @@
         [number]="sudoku[i][j]"
         [row]="i"
         [column]="j"
+        (sendIndices)="updateFocusedCell($event)"
       ></app-sudoku-cell>
     </span>
   </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ElementRef, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ElementRef, AfterViewInit, ViewChild, Output, EventEmitter } from '@angular/core';
 import { SudokuService } from '../sudoku.service';
 
 @Component({
@@ -12,6 +12,8 @@ export class SudokuCellComponent implements OnInit, AfterViewInit {
   @Input () row!: number;
   @Input () column!: number;
   @Input () focused: boolean = false;
+
+  @Output () sendIndices = new EventEmitter()
 
   @ViewChild('cell') cell!: ElementRef;
 
@@ -40,6 +42,10 @@ export class SudokuCellComponent implements OnInit, AfterViewInit {
     ""
     :
     input
+  }
+
+  handleNavigation (input: KeyboardEvent) {
+
   }
 
   private disableArrowKeyInput = (event: KeyboardEvent) => {
