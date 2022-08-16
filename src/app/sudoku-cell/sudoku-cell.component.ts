@@ -8,6 +8,7 @@ import { SudokuService } from '../sudoku.service';
 })
 export class SudokuCellComponent implements OnInit, AfterViewInit {
 
+  @Input () number: number|undefined;
   @Input () row!: number;
   @Input () column!: number;
   @Input () focused: boolean = false;
@@ -22,7 +23,6 @@ export class SudokuCellComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() : void {
-    console.log(this.cell)
   }
 
   public handleInput = (input: Event) => {
@@ -48,8 +48,28 @@ export class SudokuCellComponent implements OnInit, AfterViewInit {
     }   
   }
 
-  private applyFocus = () => this.cell.nativeElement.focus();
+  public applyFocus = () => this.cell.nativeElement.focus();
 
   private removeFocus = () => this.cell.nativeElement.blur();
 
+
+  /* 
+  # handleNav
+  
+  this.removeFocus()
+
+  emitDirection
+
+
+  # in Parent
+
+  1. receive direction & index
+  2. find next index
+  3. call method on viewchild
+  
+  
+  
+  
+  
+  */
 }

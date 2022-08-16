@@ -1,5 +1,7 @@
+  <span *ngIf="number">{{ number }}</span>
   <input 
     #cell
+    *ngIf="!number"
     (input)="handleInput($event)"
     (focus)="true"
     (blur)="true"
