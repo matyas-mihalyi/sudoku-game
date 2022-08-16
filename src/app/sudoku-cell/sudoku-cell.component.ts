@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ElementRef, AfterViewInit, ViewChild } from '@angular/core';
 import { SudokuService } from '../sudoku.service';
 
 @Component({
@@ -6,11 +6,15 @@ import { SudokuService } from '../sudoku.service';
   templateUrl: './sudoku-cell.component.html',
   styleUrls: ['./sudoku-cell.component.sass']
 })
-export class SudokuCellComponent implements OnInit {
+export class SudokuCellComponent implements OnInit, AfterViewInit {
 
-  @Input () number: number|undefined = undefined;
   @Input () row!: number;
   @Input () column!: number;
+  @Input () focused: boolean = false;
+
+  @ViewChild('cell',  {read: ElementRef}) cell: ElementRef|undefined
+
+  // cell!: ElementRef;
 
   constructor(
     private gameService: SudokuService
@@ -19,12 +23,16 @@ export class SudokuCellComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  public handleInput (input: Event) {
+  ngAfterViewInit() : void {
+    console.log(this.cell)
+  }
+
+  public handleInput = (input: Event) => {
     const inputField = (input.target as HTMLInputElement);
     const inputValue = inputField.value;
     const lastInputValue = inputValue[inputValue.length - 1];
 
-    inputField.value = this.convertValue(lastInputValue);
+    inputField.value = this.convertValue(lastInputValue) || "";
 
     this.gameService.updateCell(this.row, this.column, inputField.value);
   }
@@ -34,6 +42,16 @@ export class SudokuCellComponent implements OnInit {
     ""
     :
     input
+  }
+
+  private disableArrowKeyInput = (event: KeyboardEvent) => {
+    if (event.key === "ArrowUp" || event.key === "ArrowDown") {
+      event.preventDefault();
+    }   
+  }
+
+  private applyFocus = () => {
+    
   }
 
 }
