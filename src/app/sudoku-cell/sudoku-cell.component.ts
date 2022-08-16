@@ -12,9 +12,7 @@ export class SudokuCellComponent implements OnInit, AfterViewInit {
   @Input () column!: number;
   @Input () focused: boolean = false;
 
-  @ViewChild('cell',  {read: ElementRef}) cell: ElementRef|undefined
-
-  // cell!: ElementRef;
+  @ViewChild('cell') cell!: ElementRef;
 
   constructor(
     private gameService: SudokuService
@@ -50,8 +48,8 @@ export class SudokuCellComponent implements OnInit, AfterViewInit {
     }   
   }
 
-  private applyFocus = () => {
-    
-  }
+  private applyFocus = () => this.cell.nativeElement.focus();
+
+  private removeFocus = () => this.cell.nativeElement.blur();
 
 }
