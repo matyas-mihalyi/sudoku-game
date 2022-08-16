@@ -9,7 +9,7 @@
     class="row">
     <span *ngFor="let cell of sudoku[i], index as j" class="cell-wrapper">
       <app-sudoku-cell
-        #children 
+        #cell 
         [number]="sudoku[i][j]"
         [row]="i"
         [column]="j"

@@ -13,7 +13,7 @@ export class SudokuBoardComponent implements OnInit {
 
   private focusedCellIndices: CellIndices = { row: -1, column: -1 }
 
-  @ViewChildren("children") children!: QueryList<any>
+  @ViewChildren("cell") cells!: QueryList<any>
 
   constructor(
     private gameService : SudokuService
@@ -40,12 +40,12 @@ export class SudokuBoardComponent implements OnInit {
 
   blurCurrentCell () {
     const index = this.focusedCellIndices.row * this.focusedCellIndices.column;
-    this.children.toArray()[index].removeFocus();
+    this.cells.toArray()[index].removeFocus();
   }
 
   focusNextCell (event: KeyboardEvent , currentRow:number, currentCol:number) {
     const nextCellIndex = this.findNextCellIndex[event.key as Direction](currentRow, currentCol);
-    const nextCell = this.children.toArray()[nextCellIndex];
+    const nextCell = this.cells.toArray()[nextCellIndex];
     nextCell.applyFocus();
   }
 
