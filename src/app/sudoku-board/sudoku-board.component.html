@@ -1,20 +1,21 @@
-<main class="board-wrapper" *ngIf="sudoku">
+<main 
+  *ngIf="sudoku"
+  (keydown)="handleNavigation($event)"
+  class="board-wrapper" 
+  >
+  
   <div 
     *ngFor="let row of sudoku; index as i;"
     class="row">
     <span *ngFor="let cell of sudoku[i], index as j" class="cell-wrapper">
-
-      <span
-        *ngIf="sudoku[i][j]"
-      >
-        {{ sudoku[i][j]}}
-      </span>
-
-      <app-sudoku-cell 
-        *ngIf="!sudoku[i][j]"
+      <app-sudoku-cell
+        #cell 
+        [number]="sudoku[i][j]"
         [row]="i"
         [column]="j"
+        (sendIndices)="updateFocusedCell($event)"
       ></app-sudoku-cell>
     </span>
   </div>
+
 </main>
