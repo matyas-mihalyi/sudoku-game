@@ -30,17 +30,21 @@ export class SudokuBoardComponent implements OnInit {
     this.gameService.isValid.subscribe(validity => {
       this.sudokuIsSolved = validity;
       if (validity) {
-        this.disableInput();
-        this.animationService.animate("../../assets/so_good.png")
+        this.handleSudokuCompletion();
       }
     })
   }
-
+  
   ngAfterViewInit(): void {
+  }
+  
+  handleSudokuCompletion () {
+    this.disableInput();
+    this.animationService.animate("../../assets/so_good.png");
   }
 
   disableInput(): void {
-    this.cells.toArray().forEach(cell => cell.disableCell())
+    this.cells.toArray().forEach(cell => cell.disableCell());
   }
 
   handleNewSudokuRequest():void {
@@ -58,6 +62,7 @@ export class SudokuBoardComponent implements OnInit {
   }
 
   generateNewSudoku(): void {
+    this.sudokuIsSolved = false;
     this.gameService.createNewSudoku();
     this.sudoku = this.gameService.startingSudoku;
     this.animationService.animate("../../assets/another_one.gif");
