@@ -39,6 +39,20 @@ export class SudokuBoardComponent implements OnInit {
     this.cells.toArray().forEach(cell => cell.disableCell())
   }
 
+  handleNewSudokuRequest():void {
+    if (this.sudokuIsSolved) {
+      this.generateNewSudoku();
+    } else {
+      this.confirmNewSudoku();
+    }
+  }
+
+  confirmNewSudoku (): void {
+    if(confirm("Are you sure? You haven't finished this one yet.")) {
+      this.generateNewSudoku();
+    }
+  }
+
   generateNewSudoku(): void {
     this.gameService.createNewSudoku();
     this.sudoku = this.gameService.startingSudoku;
