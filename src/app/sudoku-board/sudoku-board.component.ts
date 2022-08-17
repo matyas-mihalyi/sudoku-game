@@ -59,7 +59,7 @@ export class SudokuBoardComponent implements OnInit {
   
   handleSudokuCompletion () {
     this.disableInput();
-    this.animationService.animate("../../assets/so_good.png");
+    this.animationService.animate("finished");
   }
 
   disableInput(): void {
@@ -84,7 +84,7 @@ export class SudokuBoardComponent implements OnInit {
     this.sudokuIsSolved = false;
     this.gameService.createNewSudoku();
     this.sudoku = this.gameService.startingSudoku;
-    this.animationService.animate("../../assets/another_one.gif");
+    this.animationService.animate("anotherOne");
   }
 
   handleNavigation = (e: KeyboardEvent) => {

@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
+import { AnimationType } from './types';
+import { assets } from './animation-assets';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -11,7 +14,8 @@ export class AnimationService {
 
   constructor() { }
 
-  public animate (img: string) {
+  public animate (type: AnimationType) {
+    const img = assets[type]();
     this.setImage(img);
     this.isAnimated.next(true);
     setTimeout(()=> this.isAnimated.next(false), 3000);

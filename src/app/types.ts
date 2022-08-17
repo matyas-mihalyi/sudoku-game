@@ -10,3 +10,5 @@ export interface CellIndices {
   row: number,
   column: number
 }
+
+export type AnimationType = "finished" | "anotherOne" | "moreClues" | "lessClues";
