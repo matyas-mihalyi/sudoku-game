@@ -23,9 +23,29 @@
 <button
   (click)="handleNewSudokuRequest()"
   type="button"
->
-Give me another one
+  >
+  Give me another one
 </button>
+
+<section class="clue-adjuster">
+  <button
+    (click)="moreClues()"
+    type="button"
+    class="clue more"
+    [disabled]="maxCluesReached"
+    >
+    More clues
+  </button>
+  
+  <button
+    (click)="lessClues()"
+    type="button"
+    class="clue less"
+    [disabled]="minCluesReached"
+  >
+    Less clues
+  </button>
+</section>
 
 
 <app-animated-background-meme>
