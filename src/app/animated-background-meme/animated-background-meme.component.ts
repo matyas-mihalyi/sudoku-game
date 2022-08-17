@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AnimationService } from '../animation.service';
 
 import { animation } from './animations';
 
@@ -16,20 +17,17 @@ export class AnimatedBackgroundMemeComponent implements OnInit {
 
   public isAnimated = false
 
-  constructor() { }
+  constructor(
+    private animationService: AnimationService
+  ) { }
 
   ngOnInit(): void {
-  }
+    this.animationService.getImage().subscribe(img => {
+      this.imgSrc = img.src;
+      this.imgAlt = img.alt;
+    });
 
-  public animate (img: string) {
-    this.setImage(img);
-    this.isAnimated = !this.isAnimated
-    setTimeout(()=> this.isAnimated = !this.isAnimated, 3000)
-  }
-
-  private setImage (str: string) {
-    this.imgSrc = str;
-    this.imgAlt = str;
+    this.animationService.getState().subscribe(state => this.isAnimated = state);
   }
 
 }

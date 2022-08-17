@@ -1,7 +1,9 @@
 import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+
+import { AnimationService } from '../animation.service';
 import { SudokuService } from '../sudoku.service';
 import { ArrayOf9Elements, CellIndices, Direction, Sudoku } from '../types';
+
 
 @Component({
   selector: 'app-sudoku-board',
@@ -10,7 +12,7 @@ import { ArrayOf9Elements, CellIndices, Direction, Sudoku } from '../types';
 })
 export class SudokuBoardComponent implements OnInit {
 
-  public sudoku = this.gameService.startingSudoku;
+  public sudoku: Sudoku = this.gameService.startingSudoku;
 
   private focusedCellIndices: CellIndices = { row: -1, column: -1 }
 
@@ -19,7 +21,8 @@ export class SudokuBoardComponent implements OnInit {
   @ViewChildren("cell") cells!: QueryList<any>
 
   constructor(
-    private gameService : SudokuService
+    private gameService : SudokuService,
+    private animationService: AnimationService
   ) { 
   }
   
@@ -27,7 +30,8 @@ export class SudokuBoardComponent implements OnInit {
     this.gameService.isValid.subscribe(validity => {
       this.sudokuIsSolved = validity;
       if (validity) {
-        this.disableInput()
+        this.disableInput();
+        this.animationService.animate("../../assets/so_good.png")
       }
     })
   }
@@ -56,6 +60,7 @@ export class SudokuBoardComponent implements OnInit {
   generateNewSudoku(): void {
     this.gameService.createNewSudoku();
     this.sudoku = this.gameService.startingSudoku;
+    this.animationService.animate("../../assets/another_one.gif");
   }
 
   handleNavigation = (e: KeyboardEvent) => {
