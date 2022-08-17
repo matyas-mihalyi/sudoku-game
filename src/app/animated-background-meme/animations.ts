@@ -6,8 +6,8 @@ const getRandomNumberBetween = (min: number, max: number) => Math.floor(Math.ran
 const x = getRandomNumberBetween(20, 80);
 const y = getRandomNumberBetween(20, 40);
 
-const bottom = getRandomNumberBetween(10, 30);
-const left = getRandomNumberBetween(10, 90);
+const bottom = getRandomNumberBetween(10, 20);
+const left = getRandomNumberBetween(40, 60);
 
 export const animation = trigger("animateBackground", [
 
@@ -16,6 +16,7 @@ export const animation = trigger("animateBackground", [
       bottom: `${bottom}%`,
       left: `${left}%`, 
       opacity: 0,
+      zIndex: 1,
       offset: 0
     }),
     style({
@@ -30,7 +31,8 @@ export const animation = trigger("animateBackground", [
     }),
     style({
       transform: `translate(-${x}%, -${y}%)`, 
-      opacity: 0, 
+      opacity: 0,
+      zIndex: -1, 
       offset: 1
     }),
   ]))),
