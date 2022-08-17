@@ -23,6 +23,10 @@ export class SudokuBoardComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  ngAfterViewInit(): void {
+    // console.log(this.cells.toArray())
+  }
+
   handleNavigation = (e: KeyboardEvent) => {
     if (this.isArrowKey(e)) {
       this.focusNextCell(e, this.focusedCellIndices.row, this.focusedCellIndices.column)
@@ -57,53 +61,43 @@ export class SudokuBoardComponent implements OnInit {
   }
 
   findCellIndexRight (currentRow: number, currentCol: number): number {
-    const availableIndicesInRow = this.getAvailableIndices(this.sudoku[currentRow]);
-    const nextIndexInRow = this.getNextAvailableIndex(availableIndicesInRow, currentCol);
+    const nextIndexInRow = this.getNextAvailableIndex(this.sudoku[currentRow], currentCol);
     const nextIndexInSudoku = nextIndexInRow + (currentRow * 9);
     return nextIndexInSudoku; 
   }
   
   findCellIndexLeft (currentRow: number, currentCol: number): number {
-    const availableIndicesInRow = this.getAvailableIndices(this.sudoku[currentRow]);
-    const previousIndexInRow = this.getPreviousAvailableIndex(availableIndicesInRow, currentCol);
+    const previousIndexInRow = this.getPreviousAvailableIndex(this.sudoku[currentRow], currentCol);
     const previousIndexInSudoku = previousIndexInRow + (currentRow * 9);
     return previousIndexInSudoku; 
   }
   
   findCellIndexDown (currentRow: number, currentCol: number): number {
     const column = this.getColumnFromSudoku(currentCol);
-    const availableIndicesInColumn = this.getAvailableIndices(column);
-    const nextIndexInColumn = this.getNextAvailableIndex(availableIndicesInColumn, currentRow);
+    const nextIndexInColumn = this.getNextAvailableIndex(column, currentRow);
     const nextIndexInSudoku = nextIndexInColumn * 9 + currentCol;
     return nextIndexInSudoku; 
   } 
 
   findCellIndexUp (currentRow: number, currentCol: number): number {
     const column = this.getColumnFromSudoku(currentCol);
-    const availableIndicesInColumn = this.getAvailableIndices(column);
-    const previousIndexInColumn = this.getPreviousAvailableIndex(availableIndicesInColumn, currentRow);
+    const previousIndexInColumn = this.getPreviousAvailableIndex(column, currentRow);
     const previousIndexInSudoku = previousIndexInColumn * 9 + currentCol;
     return previousIndexInSudoku; 
   } 
-  
-  getAvailableIndices(arr: ArrayOf9Elements<number|undefined>): number[] {
-    return arr.reduce((acc: number[], current, i) => {
-      if (current === undefined) {
-        acc.push(i);
-      }
-      return acc
-    }, []);
-  }
 
-  getNextAvailableIndex = (arr: number[], currentIndex: number): number => {
-    const nextElementInArray = arr.find(index => index > currentIndex) || arr[0];
-    return nextElementInArray;
+  getNextAvailableIndex = (arr: ArrayOf9Elements<number|undefined>, currentIndex: number): number => {
+    return currentIndex + 1 < arr.length ?
+    currentIndex + 1
+    :
+    0
   }
     
-  getPreviousAvailableIndex = (arr: number[], currentIndex: number): number => {
-    const previousIndexInArray = arr.indexOf(currentIndex) - 1 >= 0 ? arr.indexOf(currentIndex) - 1 : arr.length -1;
-    const previousElementInArray = arr[previousIndexInArray]; 
-    return previousElementInArray;
+  getPreviousAvailableIndex = (arr: ArrayOf9Elements<number|undefined>, currentIndex: number): number => {
+    return currentIndex - 1 >= 0 ?
+    currentIndex - 1
+    :
+    arr.length - 1
   }
   
   getColumnFromSudoku = (columnIndex: number) => {

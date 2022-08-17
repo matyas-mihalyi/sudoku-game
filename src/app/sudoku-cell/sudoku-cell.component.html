@@ -1,8 +1,12 @@
-  <span *ngIf="number" tabindex="0">
-    <!-- <span> -->
+  <span 
+    #cell
+    *ngIf="number"
+    tabindex="0"
+    (focus)="sendIndices.emit({row, column})"
+    >
       {{ number }}
-    <!-- </span> -->
   </span>
+
   <input 
     #cell
     *ngIf="!number"
