@@ -18,6 +18,10 @@ export class SudokuBoardComponent implements OnInit {
 
   public sudokuIsSolved = false;
 
+  public maxCluesReached = false;
+  
+  public minCluesReached = false;
+
   @ViewChildren("cell") cells!: QueryList<any>
 
   constructor(
@@ -32,10 +36,25 @@ export class SudokuBoardComponent implements OnInit {
       if (validity) {
         this.handleSudokuCompletion();
       }
-    })
+    });
+
+    this.gameService.lowerClueLimitReached.asObservable().subscribe(val => this.minCluesReached = val);
+    this.gameService.upperClueLimitReached.asObservable().subscribe(val => this.maxCluesReached = val);
   }
   
   ngAfterViewInit(): void {
+  }
+
+  public moreClues = () => {
+    this.sudokuIsSolved = false;
+    this.gameService.createSudokuWithMoreClues();
+    this.sudoku = this.gameService.startingSudoku;
+  }
+
+  public lessClues = () => {
+    this.sudokuIsSolved = false;
+    this.gameService.createSudokuWithLessClues();
+    this.sudoku = this.gameService.startingSudoku;
   }
   
   handleSudokuCompletion () {
