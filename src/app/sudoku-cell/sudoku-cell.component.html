@@ -1,4 +1,8 @@
-  <span *ngIf="number">{{ number }}</span>
+  <span *ngIf="number" tabindex="0">
+    <!-- <span> -->
+      {{ number }}
+    <!-- </span> -->
+  </span>
   <input 
     #cell
     *ngIf="!number"

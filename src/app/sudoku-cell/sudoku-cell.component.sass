@@ -6,29 +6,33 @@
   display: flex
   justify-content: center
   align-items: center
+  align-content: center
 
 span,input
   width: 100%
-  border: none
-  font-size: clamp(1.5rem, 5vw, 2.5rem)
-  text-align: center
-
-input
-  font-size: clamp(1.5rem, 5.5vw, 3rem)
   height: 100%
-  color: #555
-  caret-color: transparent
-  font-family: Nanum Pen Script
+  border: none
+  text-align: center
 
   &:active
     box-shadow: mixins.$selected-shadow
-    border: none
+    outline: none
   
   &:focus
     box-shadow: mixins.$selected-shadow
     outline: none
-    
 
+input
+  font-size: clamp(1.5rem, 5.5vw, 3rem)
+  color: #555
+  caret-color: transparent
+  font-family: Nanum Pen Script
+
+span
+  font-size: clamp(1.5rem, 5vw, 2.5rem)
+  display: inline-flex
+  align-items: center
+  justify-content: center
 
 // remove input arrows
 input::-webkit-outer-spin-button,
