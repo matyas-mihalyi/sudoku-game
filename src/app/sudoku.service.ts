@@ -39,7 +39,6 @@ export class SudokuService {
   private observer = {
     next: ( sudoku: Sudoku ) => {
       if (this.sudokuIsFilled(sudoku) && this.checkSudokuValidity(sudoku)) {
-        console.log(sudoku)
         this.isValid.next(true)
       }
     }
@@ -48,5 +47,10 @@ export class SudokuService {
   private sudokuIsFilled = (sudoku: Sudoku) => sudoku.flat().filter(cell => cell == (undefined || null)).length === 0;
 
   private checkSudokuValidity = (sudoku: Sudoku) => validateSudoku(sudoku);
+
+  public createNewSudoku () {
+    this.startingSudoku = generateSudoku(1);
+    this.sudoku.next(JSON.parse(JSON.stringify(this.startingSudoku)))
+  }
 
 }

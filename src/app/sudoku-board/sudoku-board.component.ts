@@ -32,13 +32,16 @@ export class SudokuBoardComponent implements OnInit {
     })
   }
 
-  
   ngAfterViewInit(): void {
-    // this.disableInput()
   }
 
   disableInput(): void {
     this.cells.toArray().forEach(cell => cell.disableCell())
+  }
+
+  generateNewSudoku(): void {
+    this.gameService.createNewSudoku();
+    this.sudoku = this.gameService.startingSudoku;
   }
 
   handleNavigation = (e: KeyboardEvent) => {
