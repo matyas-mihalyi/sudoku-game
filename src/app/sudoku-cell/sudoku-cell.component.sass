@@ -28,7 +28,9 @@ input
   caret-color: transparent
   font-family: Nanum Pen Script
 
-span
+span, input[disabled]
+  font-family: mixins.$primary-font
+  color: #000
   font-size: clamp(1.5rem, 5vw, 2.5rem)
   display: inline-flex
   align-items: center

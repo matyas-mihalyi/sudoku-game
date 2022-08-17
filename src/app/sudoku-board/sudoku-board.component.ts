@@ -1,4 +1,5 @@
 import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 import { SudokuService } from '../sudoku.service';
 import { ArrayOf9Elements, CellIndices, Direction, Sudoku } from '../types';
 
@@ -13,6 +14,8 @@ export class SudokuBoardComponent implements OnInit {
 
   private focusedCellIndices: CellIndices = { row: -1, column: -1 }
 
+  public sudokuIsSolved = false;
+
   @ViewChildren("cell") cells!: QueryList<any>
 
   constructor(
@@ -21,10 +24,21 @@ export class SudokuBoardComponent implements OnInit {
   }
   
   ngOnInit(): void {
+    this.gameService.isValid.subscribe(validity => {
+      this.sudokuIsSolved = validity;
+      if (validity) {
+        this.disableInput()
+      }
+    })
   }
 
+  
   ngAfterViewInit(): void {
-    // console.log(this.cells.toArray())
+    // this.disableInput()
+  }
+
+  disableInput(): void {
+    this.cells.toArray().forEach(cell => cell.disableCell())
   }
 
   handleNavigation = (e: KeyboardEvent) => {

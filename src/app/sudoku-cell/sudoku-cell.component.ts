@@ -48,4 +48,5 @@ export class SudokuCellComponent implements OnInit {
 
   public applyFocus = () => this.cell.nativeElement.focus();
 
+  public disableCell = () => this.cell.nativeElement.disabled = true;
 }

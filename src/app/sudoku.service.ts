@@ -10,9 +10,9 @@ import { Sudoku } from './types';
 
 export class SudokuService {
 
-  public startingSudoku = generateSudoku();
+  public startingSudoku = generateSudoku(1);
 
-  private sudoku = new BehaviorSubject<Sudoku>(JSON.parse(JSON.stringify(this.startingSudoku)));
+  public sudoku = new BehaviorSubject<Sudoku>(JSON.parse(JSON.stringify(this.startingSudoku)));
 
   public isValid = new BehaviorSubject<boolean>(false);
 
@@ -27,7 +27,6 @@ export class SudokuService {
     updatedSudoku[row][col] = value;
     
     this.sudoku.next(updatedSudoku);
-    console.log(this.sudokuIsFilled(updatedSudoku))
   }
 
   private convertInputValue = (input: string): (number | undefined) => {
