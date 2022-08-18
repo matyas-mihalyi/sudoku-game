@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 import { generateSudoku, validateSudoku } from 'sudoku-logic';
-import { Sudoku } from './types';
+import { AnimationService } from './animation.service';
+import { AnimationType, Sudoku } from './types';
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +27,9 @@ export class SudokuService {
 
   public isValid = new BehaviorSubject<boolean>(false);
 
-  constructor() {
+  constructor(
+    private animationService: AnimationService
+  ) {
     this.sudoku.asObservable().subscribe(this.observer)
   }
 
@@ -82,13 +85,21 @@ export class SudokuService {
     }
   }
 
-  public createSudokuWithMoreClues () {
-    this.removeLessCells();
-    this.createNewSudoku();
+  private animate = (str: AnimationType) => {
+    if (this.numberOfCellsToRemove % 5 === 0) {
+      this.animationService.animate(str);
+    }
   }
 
+  public createSudokuWithMoreClues () {
+    this.removeLessCells();
+    this.animate("moreClues");
+    this.createNewSudoku();
+  }
+  
   public createSudokuWithLessClues () {
     this.removeMoreCells();
+    this.animate("lessClues");
     this.createNewSudoku();
   }
 
