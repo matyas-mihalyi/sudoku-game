@@ -1,0 +1,37 @@
+@use '../mixins'
+
+:host
+  width: 100%
+  max-width: 600px
+  display: flex
+  flex-direction: column
+  align-items: center
+  justify-content: flex-start
+
+button
+  background-color: transparent
+  border-radius: 0.25rem
+  border: none
+  cursor: pointer
+
+  &:disabled:hover
+    background-color: transparent 
+
+  &:hover
+    background-color: buttonface
+
+  &.reset
+    font-family: mixins.$primary-font
+    padding: 1.25rem 1.75rem
+    font-size: clamp(1rem, 5vw, 1.5rem)
+  
+
+.clue-adjuster
+  width: 100%
+  display: flex
+  justify-content: space-between
+
+  button
+    padding: 1rem 1.5rem
+    font-family: mixins.$primary-font
+    font-size: clamp(0.75rem, 5vw, 1rem)
