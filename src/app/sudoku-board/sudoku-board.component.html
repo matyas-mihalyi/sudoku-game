@@ -25,7 +25,7 @@
     (click)="moreClues()"
     type="button"
     class="more"
-    [disabled]="maxCluesReached"
+    [disabled]="maxCluesReached || sudokuIsSolved"
   >
     More clues
   </button>
@@ -34,7 +34,7 @@
     (click)="lessClues()"
     type="button"
     class="less"
-    [disabled]="minCluesReached"
+    [disabled]="minCluesReached || sudokuIsSolved"
   >
     Less clues
   </button>
