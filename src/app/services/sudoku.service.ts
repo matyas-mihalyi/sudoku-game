@@ -11,28 +11,18 @@ import { AnimationType, Sudoku } from '../types';
 
 export class SudokuService {
 
-  private numberOfCellsToRemove = 2;
-
-  private maxNumberOfCellsToRemove = 64;
-
-  private minNumberOfCellsToRemove = 1;
-
+  public numberOfCellsToRemove = 2;
+  
   public upperClueLimitReached = new BehaviorSubject<boolean>(false);
   
   public lowerClueLimitReached = new BehaviorSubject<boolean>(false);;
-
+  
   public startingSudoku = generateSudoku(this.numberOfCellsToRemove);
 
   public sudoku = new BehaviorSubject<Sudoku>(JSON.parse(JSON.stringify(this.startingSudoku)));
-
+  
   public isValid = new BehaviorSubject<boolean>(false);
-
-  constructor(
-    private animationService: AnimationService
-  ) {
-    this.sudoku.asObservable().subscribe(this.observer)
-  }
-
+  
   public updateCell = (row: number, col: number, inputValue: string) => {
     const updatedSudoku = this.sudoku.value;
     const value = this.convertInputValue(inputValue)
@@ -41,19 +31,29 @@ export class SudokuService {
     this.sudoku.next(updatedSudoku);
   }
 
-  private convertInputValue = (input: string): (number | undefined) => {
-    return input === "" ?
-      undefined
-      :
-      Number(input)
+  constructor(
+    private animationService: AnimationService
+  ) {
+    this.sudoku.asObservable().subscribe(this.validityObserver)
   }
 
-  private observer = {
+  private maxNumberOfCellsToRemove = 64;
+
+  private minNumberOfCellsToRemove = 1;
+  
+  private validityObserver = {
     next: ( sudoku: Sudoku ) => {
       if (this.sudokuIsFilled(sudoku) && this.checkSudokuValidity(sudoku)) {
         this.isValid.next(true)
       }
     }
+  }
+
+  private convertInputValue = (input: string): (number | undefined) => {
+    return input === "" ?
+      undefined
+      :
+      Number(input)
   }
 
   private sudokuIsFilled = (sudoku: Sudoku) => sudoku.flat().filter(cell => cell == (undefined || null)).length === 0;

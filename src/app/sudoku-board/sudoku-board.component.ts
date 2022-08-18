@@ -25,6 +25,30 @@ export class SudokuBoardComponent implements OnInit {
   set cells(value: QueryList<any>) {
     setTimeout(()=> this.navigationService.cells = value)
   }
+  
+  public handleNavigation = (e: KeyboardEvent) => this.navigationService.handleNavigation(e); 
+
+  public updateFocusedCell = (newIndices: CellIndices) => this.navigationService.updateFocusedCell(newIndices);
+  
+  public moreClues = () => {
+    this.sudokuIsSolved = false;
+    this.gameService.createSudokuWithMoreClues();
+    this.sudoku = this.gameService.startingSudoku;
+  }
+
+  public lessClues = () => {
+    this.sudokuIsSolved = false;
+    this.gameService.createSudokuWithLessClues();
+    this.sudoku = this.gameService.startingSudoku;
+  }
+
+  public handleNewSudokuRequest():void {
+    if (this.sudokuIsSolved) {
+      this.generateNewSudoku();
+    } else {
+      this.confirmNewSudoku();
+    }
+  }
 
   constructor(
     private gameService : SudokuService,
@@ -40,58 +64,33 @@ export class SudokuBoardComponent implements OnInit {
         this.handleSudokuCompletion();
       }
     });
-
+    
     this.gameService.lowerClueLimitReached.asObservable().subscribe(val => this.minCluesReached = val);
     this.gameService.upperClueLimitReached.asObservable().subscribe(val => this.maxCluesReached = val);
   }
   
-  ngAfterViewInit(): void {
-  }
-
-  public moreClues = () => {
-    this.sudokuIsSolved = false;
-    this.gameService.createSudokuWithMoreClues();
-    this.sudoku = this.gameService.startingSudoku;
-  }
-
-  public lessClues = () => {
-    this.sudokuIsSolved = false;
-    this.gameService.createSudokuWithLessClues();
-    this.sudoku = this.gameService.startingSudoku;
-  }
   
-  handleSudokuCompletion () {
+  private handleSudokuCompletion () {
     this.disableInput();
     this.animationService.animate("finished");
   }
 
-  disableInput(): void {
+  private disableInput(): void {
     this.navigationService.cells.toArray().forEach(cell => cell.disableCell());
   }
 
-  handleNewSudokuRequest():void {
-    if (this.sudokuIsSolved) {
-      this.generateNewSudoku();
-    } else {
-      this.confirmNewSudoku();
-    }
-  }
-
-  confirmNewSudoku (): void {
+  private confirmNewSudoku (): void {
     if(confirm("Are you sure? You haven't finished this one yet.")) {
       this.generateNewSudoku();
     }
   }
 
-  generateNewSudoku(): void {
+  private generateNewSudoku(): void {
     this.sudokuIsSolved = false;
     this.gameService.createNewSudoku();
     this.sudoku = this.gameService.startingSudoku;
     this.animationService.animate("anotherOne");
   }
 
-  handleNavigation = (e: KeyboardEvent) => this.navigationService.handleNavigation(e); 
-
-  updateFocusedCell = (newIndices: CellIndices) => this.navigationService.updateFocusedCell(newIndices);
   
 }
