@@ -20,32 +20,6 @@
 
 </main>
 
-<section class="clue-adjuster">
-  <button
-    (click)="moreClues()"
-    type="button"
-    class="more"
-    [disabled]="maxCluesReached || sudokuIsSolved"
-  >
-    More clues
-  </button>
-
-  <button
-    (click)="lessClues()"
-    type="button"
-    class="less"
-    [disabled]="minCluesReached || sudokuIsSolved"
-  >
-    Less clues
-  </button>
-</section>
-
-<button
-  (click)="handleNewSudokuRequest()"
-  type="button"
-  class="reset"
-  >
-  Give me another one
-</button>
+<app-controls></app-controls>
 
 <app-animated-background-meme></app-animated-background-meme>

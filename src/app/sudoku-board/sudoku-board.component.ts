@@ -15,12 +15,6 @@ export class SudokuBoardComponent implements OnInit {
 
   public sudoku: Sudoku = this.gameService.startingSudoku;
 
-  public sudokuIsSolved = false;
-
-  public maxCluesReached = false;
-  
-  public minCluesReached = false;
-
   @ViewChildren("cell")
   set cells(value: QueryList<any>) {
     setTimeout(()=> this.navigationService.cells = value)
@@ -29,26 +23,6 @@ export class SudokuBoardComponent implements OnInit {
   public handleNavigation = (e: KeyboardEvent) => this.navigationService.handleNavigation(e); 
 
   public updateFocusedCell = (newIndices: CellIndices) => this.navigationService.updateFocusedCell(newIndices);
-  
-  public moreClues = () => {
-    this.sudokuIsSolved = false;
-    this.gameService.createSudokuWithMoreClues();
-    this.sudoku = this.gameService.startingSudoku;
-  }
-
-  public lessClues = () => {
-    this.sudokuIsSolved = false;
-    this.gameService.createSudokuWithLessClues();
-    this.sudoku = this.gameService.startingSudoku;
-  }
-
-  public handleNewSudokuRequest():void {
-    if (this.sudokuIsSolved) {
-      this.generateNewSudoku();
-    } else {
-      this.confirmNewSudoku();
-    }
-  }
 
   constructor(
     private gameService : SudokuService,
@@ -63,16 +37,11 @@ export class SudokuBoardComponent implements OnInit {
     })
 
     this.gameService.isValid.subscribe(validity => {
-      this.sudokuIsSolved = validity;
       if (validity) {
-        this.handleSudokuCompletion();
+       this.handleSudokuCompletion();
       }
     });
-    
-    this.gameService.lowerClueLimitReached.asObservable().subscribe(val => this.minCluesReached = val);
-    this.gameService.upperClueLimitReached.asObservable().subscribe(val => this.maxCluesReached = val);
   }
-  
   
   private handleSudokuCompletion () {
     this.disableInput();
@@ -82,19 +51,5 @@ export class SudokuBoardComponent implements OnInit {
   private disableInput(): void {
     this.navigationService.cells.toArray().forEach(cell => cell.disableCell());
   }
-
-  private confirmNewSudoku (): void {
-    if(confirm("Are you sure? You haven't finished this one yet.")) {
-      this.generateNewSudoku();
-    }
-  }
-
-  private generateNewSudoku(): void {
-    this.sudokuIsSolved = false;
-    this.gameService.createNewSudoku();
-    this.sudoku = this.gameService.startingSudoku;
-    this.animationService.animate("anotherOne");
-  }
-
   
 }
