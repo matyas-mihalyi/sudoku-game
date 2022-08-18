@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ElementRef, ViewChild, Output, EventEmitter } from '@angular/core';
-import { SudokuService } from '../sudoku.service';
+import { SudokuService } from '../services/sudoku.service';
 
 @Component({
   selector: 'app-sudoku-cell',
@@ -16,12 +16,15 @@ export class SudokuCellComponent implements OnInit {
 
   @ViewChild('cell') cell!: ElementRef;
 
-  constructor(
-    private gameService: SudokuService
-  ) { }
-
-  ngOnInit(): void {
+  public disableArrowKeyInput = (event: KeyboardEvent) => {
+    if (event.key === "ArrowUp" || event.key === "ArrowDown") {
+      event.preventDefault();
+    }   
   }
+
+  public applyFocus = () => this.cell.nativeElement.focus();
+
+  public disableCell = () => this.cell.nativeElement.disabled = true;
 
   public handleInput = (input: Event) => {
     const inputField = (input.target as HTMLInputElement);
@@ -32,21 +35,19 @@ export class SudokuCellComponent implements OnInit {
 
     this.gameService.updateCell(this.row, this.column, inputField.value);
   }
-  
+
+  constructor(
+    private gameService: SudokuService
+  ) { }
+
+  ngOnInit(): void {
+  }
+
   private convertInputValue = (input: string) => {
     return input === "0" ?
     ""
     :
     input
   }
-
-  public disableArrowKeyInput = (event: KeyboardEvent) => {
-    if (event.key === "ArrowUp" || event.key === "ArrowDown") {
-      event.preventDefault();
-    }   
-  }
-
-  public applyFocus = () => this.cell.nativeElement.focus();
-
-  public disableCell = () => this.cell.nativeElement.disabled = true;
+  
 }

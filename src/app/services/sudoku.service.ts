@@ -3,7 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 
 import { generateSudoku, validateSudoku } from 'sudoku-logic';
 import { AnimationService } from './animation.service';
-import { AnimationType, Sudoku } from './types';
+import { AnimationType, Sudoku } from '../types';
 
 @Injectable({
   providedIn: 'root'

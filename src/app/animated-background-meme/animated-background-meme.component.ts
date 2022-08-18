@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AnimationService } from '../animation.service';
+import { AnimationService } from '../services/animation.service';
 
 import { animation } from './animations';
 
