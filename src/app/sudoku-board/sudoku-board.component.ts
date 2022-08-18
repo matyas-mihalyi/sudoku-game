@@ -58,6 +58,10 @@ export class SudokuBoardComponent implements OnInit {
   }
   
   ngOnInit(): void {
+    this.gameService.startingSudokuObservable().subscribe(startingSudoku => {
+      this.sudoku = startingSudoku;
+    })
+
     this.gameService.isValid.subscribe(validity => {
       this.sudokuIsSolved = validity;
       if (validity) {

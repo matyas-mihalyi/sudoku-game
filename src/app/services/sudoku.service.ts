@@ -11,14 +11,16 @@ import { AnimationType, Sudoku } from '../types';
 
 export class SudokuService {
 
-  public numberOfCellsToRemove = 2;
+  public numberOfCellsToRemove = 31;
   
   public upperClueLimitReached = new BehaviorSubject<boolean>(false);
   
-  public lowerClueLimitReached = new BehaviorSubject<boolean>(false);;
+  public lowerClueLimitReached = new BehaviorSubject<boolean>(false);
   
   public startingSudoku = generateSudoku(this.numberOfCellsToRemove);
 
+  public startingSudokuObservable = () => this.startinSudokuSubject.asObservable();
+  
   public sudoku = new BehaviorSubject<Sudoku>(JSON.parse(JSON.stringify(this.startingSudoku)));
   
   public isValid = new BehaviorSubject<boolean>(false);
@@ -27,18 +29,21 @@ export class SudokuService {
     const updatedSudoku = this.sudoku.value;
     const value = this.convertInputValue(inputValue)
     updatedSudoku[row][col] = value;    
-
+    
     this.sudoku.next(updatedSudoku);
   }
-
+  
   constructor(
     private animationService: AnimationService
-  ) {
-    this.sudoku.asObservable().subscribe(this.validityObserver)
+    ) {
+      this.sudoku.asObservable().subscribe(this.validityObserver);
+      this.startinSudokuSubject.next(this.startingSudoku)
   }
 
+  private startinSudokuSubject = new BehaviorSubject<Sudoku>(this.startingSudoku);
+  
   private maxNumberOfCellsToRemove = 64;
-
+  
   private minNumberOfCellsToRemove = 1;
   
   private validityObserver = {
@@ -48,21 +53,22 @@ export class SudokuService {
       }
     }
   }
-
+  
   private convertInputValue = (input: string): (number | undefined) => {
     return input === "" ?
-      undefined
-      :
-      Number(input)
+    undefined
+    :
+    Number(input)
   }
-
+  
   private sudokuIsFilled = (sudoku: Sudoku) => sudoku.flat().filter(cell => cell == (undefined || null)).length === 0;
-
+  
   private checkSudokuValidity = (sudoku: Sudoku) => validateSudoku(sudoku);
 
   public createNewSudoku () {
     this.startingSudoku = generateSudoku(this.numberOfCellsToRemove);
-    this.sudoku.next(JSON.parse(JSON.stringify(this.startingSudoku)))
+    this.startinSudokuSubject.next(this.startingSudoku);
+    this.sudoku.next(JSON.parse(JSON.stringify(this.startingSudoku)));
   }
   
   private removeLessCells () {
