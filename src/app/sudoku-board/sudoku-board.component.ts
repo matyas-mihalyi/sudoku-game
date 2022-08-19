@@ -13,7 +13,7 @@ import { CellIndices, Sudoku } from '../types';
 })
 export class SudokuBoardComponent implements OnInit {
 
-  public sudoku: Sudoku = this.gameService.startingSudoku;
+  public sudoku!: Sudoku;
 
   @ViewChildren("cell")
   set cells(value: QueryList<any>) {
@@ -27,20 +27,23 @@ export class SudokuBoardComponent implements OnInit {
   constructor(
     private gameService : SudokuService,
     private animationService: AnimationService,
-    private navigationService: NavigationService
-  ) { 
+    private navigationService: NavigationService,
+    ) { 
   }
   
   ngOnInit(): void {
+    this.gameService.initSudoku();
+
     this.gameService.startingSudokuObservable().subscribe(startingSudoku => {
       this.sudoku = startingSudoku;
-    })
+    });
 
     this.gameService.isValid.subscribe(validity => {
       if (validity) {
        this.handleSudokuCompletion();
       }
     });
+
   }
   
   private handleSudokuCompletion () {
