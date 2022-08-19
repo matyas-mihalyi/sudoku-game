@@ -8,6 +8,8 @@ import { SudokuBoardComponent } from './sudoku-board/sudoku-board.component';
 import { SudokuCellComponent } from './sudoku-cell/sudoku-cell.component';
 import { AnimatedBackgroundMemeComponent } from './animated-background-meme/animated-background-meme.component';
 import { ControlsComponent } from './controls/controls.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,13 @@ import { ControlsComponent } from './controls/controls.component';
   imports: [
     BrowserModule,
     FormsModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    ServiceWorkerModule.register('./ngsw-worker.js', {
+      enabled: environment.production,
+      // Register the ServiceWorker as soon as the application is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]
