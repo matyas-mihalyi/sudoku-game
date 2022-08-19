@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 import { generateSudoku, validateSudoku } from 'sudoku-logic';
-import { AnimationService } from './animation.service';
-import { LocalStorageService } from './local-storage/local-storage.service';
-import { AnimationType, Sudoku, Cell } from '../types';
+import { AnimationService } from '../animation/animation.service';
+import { LocalStorageService } from '../local-storage/local-storage.service';
+import { AnimationType, Sudoku } from '../../types';
 
 @Injectable({
   providedIn: 'root'

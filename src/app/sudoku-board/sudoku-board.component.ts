@@ -1,8 +1,8 @@
 import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 
-import { AnimationService } from '../services/animation.service';
-import { NavigationService } from '../services/navigation.service';
-import { SudokuService } from '../services/sudoku.service';
+import { AnimationService } from '../services/animation/animation.service';
+import { NavigationService } from '../services/navigation/navigation.service';
+import { SudokuService } from '../services/sudoku/sudoku.service';
 import { CellIndices, Sudoku } from '../types';
 
 

@@ -1,6 +1,6 @@
 import { Injectable, QueryList } from '@angular/core';
-import { SudokuService } from './sudoku.service';
-import { ArrayOf9Elements, CellIndices, Direction, Sudoku, Cell } from '../types';
+import { SudokuService } from '../sudoku/sudoku.service';
+import { ArrayOf9Elements, CellIndices, Direction, Sudoku, Cell } from '../../types';
 
 @Injectable({
   providedIn: 'root'

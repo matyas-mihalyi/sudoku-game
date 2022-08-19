@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, ElementRef, ViewChild, Output, EventEmitter } from '@angular/core';
 
 import { LocalStorageService } from '../services/local-storage/local-storage.service';
-import { SudokuService } from '../services/sudoku.service';
+import { SudokuService } from '../services/sudoku/sudoku.service';
 import { Sudoku } from '../types';
 
 @Component({

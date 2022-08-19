@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
-import { AnimationType } from '../types';
+import { AnimationType } from '../../types';
 import { assets } from './animation-assets';
 
 @Injectable({
