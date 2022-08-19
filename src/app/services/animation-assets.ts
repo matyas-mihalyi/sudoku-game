@@ -4,8 +4,8 @@ const randomIntFromInterval = (min: number, max: number) =>  { // min and max in
 
 
 export const assets = {
-  finished: () => "../assets/so_good.png",
-  anotherOne: () => "../assets/another_one.gif",
-  moreClues: () => `../assets/more${randomIntFromInterval(1,4)}.gif`,
-  lessClues: () => `../assets/less${randomIntFromInterval(1,4)}.gif`
+  finished: () => "assets/so_good.png",
+  anotherOne: () => "assets/another_one.gif",
+  moreClues: () => `assets/more${randomIntFromInterval(1,4)}.gif`,
+  lessClues: () => `assets/less${randomIntFromInterval(1,4)}.gif`
 }
