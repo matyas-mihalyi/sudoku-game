@@ -1,6 +1,6 @@
 import { Injectable, QueryList } from '@angular/core';
 import { SudokuService } from './sudoku.service';
-import { ArrayOf9Elements, CellIndices, Direction } from '../types';
+import { ArrayOf9Elements, CellIndices, Direction, Sudoku } from '../types';
 
 @Injectable({
   providedIn: 'root'
@@ -21,9 +21,11 @@ export class NavigationService {
 
   constructor(
     private gameService: SudokuService
-  ) { }
+  ) { 
+    this.gameService.sudokuObservable().subscribe(val => this.sudoku = val)
+  }
   
-  private sudoku = this.gameService.sudoku.value;
+  private sudoku!: Sudoku;
 
   private focusedCellIndices: CellIndices = { row: -1, column: -1 };
     

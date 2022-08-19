@@ -1,5 +1,8 @@
 import { Component, OnInit, Input, ElementRef, ViewChild, Output, EventEmitter } from '@angular/core';
+
+import { LocalStorageService } from '../services/local-storage/local-storage.service';
 import { SudokuService } from '../services/sudoku.service';
+import { Sudoku } from '../types';
 
 @Component({
   selector: 'app-sudoku-cell',
@@ -37,10 +40,14 @@ export class SudokuCellComponent implements OnInit {
   }
 
   constructor(
-    private gameService: SudokuService
+    private gameService: SudokuService,
+    private localStorageService: LocalStorageService
   ) { }
 
   ngOnInit(): void {
+    this.localStorageService.currentSudoku.subscribe(sudoku => {
+      this.setValueFromLocalStorage(sudoku)
+    })
   }
 
   private convertInputValue = (input: string) => {
@@ -48,6 +55,16 @@ export class SudokuCellComponent implements OnInit {
     ""
     :
     input
+  }
+
+  private setValue (value: number) {
+    this.cell.nativeElement.value = value;
+  }
+
+  private setValueFromLocalStorage = (sudoku: Sudoku) => {
+    if (sudoku && sudoku[this.row][this.column] !== null && sudoku[this.row][this.column] !== undefined) {
+      setTimeout(()=> this.setValue(sudoku[this.row][this.column] as number)); 
+    }
   }
   
 }

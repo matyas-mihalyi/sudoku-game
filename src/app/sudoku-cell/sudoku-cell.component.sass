@@ -27,7 +27,8 @@ input
   color: #555
   caret-color: transparent
   font-family: Nanum Pen Script
-
+  animation: fade-in-2 0.9s 
+    
 span, input[disabled]
   font-family: mixins.$primary-font
   color: #000
@@ -37,12 +38,19 @@ span, input[disabled]
   justify-content: center
 
 span
-  animation: fade-in 0.3s 
+  animation: fade-in 0.3s
 
-input[disabled]
+input:disabled
   animation: fade-in 3s 
 
+
 @keyframes fade-in
+  0%
+    opacity: 0
+  100%
+    opacity: 1
+
+@keyframes fade-in-2
   0%
     opacity: 0
   100%
