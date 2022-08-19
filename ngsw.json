@@ -1,0 +1,101 @@
+{
+  "configVersion": 1,
+  "timestamp": 1660902943854,
+  "index": "/sudoku-game/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/sudoku-game/favicon.ico",
+        "/sudoku-game/index.html",
+        "/sudoku-game/main.a47339049dd8ed9c.js",
+        "/sudoku-game/manifest.webmanifest",
+        "/sudoku-game/polyfills.0e1a4ad8a12e2086.js",
+        "/sudoku-game/runtime.2f818b93b83cb2b3.js",
+        "/sudoku-game/styles.b72dc910b1ecfa92.css"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/sudoku-game/assets/another_one.gif",
+        "/sudoku-game/assets/icons/icon-128x128.png",
+        "/sudoku-game/assets/icons/icon-144x144.png",
+        "/sudoku-game/assets/icons/icon-152x152.png",
+        "/sudoku-game/assets/icons/icon-192x192.png",
+        "/sudoku-game/assets/icons/icon-384x384.png",
+        "/sudoku-game/assets/icons/icon-512x512.png",
+        "/sudoku-game/assets/icons/icon-72x72.png",
+        "/sudoku-game/assets/icons/icon-96x96.png",
+        "/sudoku-game/assets/less1.gif",
+        "/sudoku-game/assets/less2.gif",
+        "/sudoku-game/assets/less3.gif",
+        "/sudoku-game/assets/less4.gif",
+        "/sudoku-game/assets/more1.gif",
+        "/sudoku-game/assets/more2.gif",
+        "/sudoku-game/assets/more3.gif",
+        "/sudoku-game/assets/more4.gif",
+        "/sudoku-game/assets/so_good.png"
+      ],
+      "patterns": []
+    }
+  ],
+  "dataGroups": [],
+  "hashTable": {
+    "/sudoku-game/assets/another_one.gif": "eae02e0d7bb919b479cf5e3075d303f4164de4cd",
+    "/sudoku-game/assets/icons/icon-128x128.png": "573ce4ffbebb83c1dbf701179b8bed7092924789",
+    "/sudoku-game/assets/icons/icon-144x144.png": "1047486338b7a22ed4e4a875f00ffd151b9f630f",
+    "/sudoku-game/assets/icons/icon-152x152.png": "de76a2ca20ac31d64d722280a9cf551ff7473260",
+    "/sudoku-game/assets/icons/icon-192x192.png": "8c85d109f0e7e9177ca00014020cabb031526374",
+    "/sudoku-game/assets/icons/icon-384x384.png": "c67361f1dc06f9c5cecf352730ae1ffafaaf064f",
+    "/sudoku-game/assets/icons/icon-512x512.png": "40cab5f3a021af5b3ce3aa97deb49c93b02b65ee",
+    "/sudoku-game/assets/icons/icon-72x72.png": "62d1fbb8fea8ae4d6c85246b889b8ed2a8e312dc",
+    "/sudoku-game/assets/icons/icon-96x96.png": "17145987a448e549a6eb4220f65187667c2eb0f6",
+    "/sudoku-game/assets/less1.gif": "61882c4ad0a846e814a4131aa20b7219bf7948b5",
+    "/sudoku-game/assets/less2.gif": "631fc2eb4645dfe34bcead7f792387bcde9ebee0",
+    "/sudoku-game/assets/less3.gif": "1351b6d7d3c96b9a781708a06dcf749a85eebdc5",
+    "/sudoku-game/assets/less4.gif": "cdac9d8b0f86b8f6454a50a03e6014f214131834",
+    "/sudoku-game/assets/more1.gif": "de70126591a9b1131ce4898689585e78c7053238",
+    "/sudoku-game/assets/more2.gif": "370a91fc96e91fe8640fd9bbb9d194cda57ec0c0",
+    "/sudoku-game/assets/more3.gif": "c9ebda4731ba2c23c8c86c2ff1ebe3073b440e00",
+    "/sudoku-game/assets/more4.gif": "4b4bc90ab9f28fb9dfdc401138c8c9fc8f617720",
+    "/sudoku-game/assets/so_good.png": "08d5fdf4e78177fcd8c4bec6a3cff54ad375d719",
+    "/sudoku-game/favicon.ico": "fc6e18604186202ffceab7a41c57178fab613919",
+    "/sudoku-game/index.html": "14f6e7dc928deef35181db518a240b601d261613",
+    "/sudoku-game/main.a47339049dd8ed9c.js": "3b69361afe0950b14ecd37b80012dbb0fcc3d0c6",
+    "/sudoku-game/manifest.webmanifest": "6fbc1532d0d2c30f0b69b54f209ad54fba367baa",
+    "/sudoku-game/polyfills.0e1a4ad8a12e2086.js": "19a9f2df02a3a8009a27e7f7280d447e929189bf",
+    "/sudoku-game/runtime.2f818b93b83cb2b3.js": "ac1efd4849b0dba6bd5237fe2ac99e954d5d31ab",
+    "/sudoku-game/styles.b72dc910b1ecfa92.css": "3096c54e2ac06a150edb483567e9fd0efb49afe5"
+  },
+  "navigationUrls": [
+    {
+      "positive": true,
+      "regex": "^\\/.*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*\\.[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*\\/.*$"
+    }
+  ],
+  "navigationRequestStrategy": "performance"
+}
