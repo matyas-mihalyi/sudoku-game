@@ -10,7 +10,7 @@
   <input 
     #cell
     *ngIf="!number"
-    (input)="handleInput($event)"
+    (input)="handleInput(cell.value)"
     (keydown)="disableArrowKeyInput($event)"
     (focus)="sendIndices.emit({row, column})"
     type="number" 

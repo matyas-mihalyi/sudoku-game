@@ -29,14 +29,11 @@ export class SudokuCellComponent implements OnInit {
 
   public disableCell = () => this.cell.nativeElement.disabled = true;
 
-  public handleInput = (input: Event) => {
-    const inputField = (input.target as HTMLInputElement);
-    const inputValue = inputField.value;
-    const lastInputValue = inputValue[inputValue.length - 1];
+  public handleInput = (value: string) => {
+    const lastInputValue = value[value.length - 1];
+    this.cell.nativeElement.value = this.convertInputValue(lastInputValue) || "";
 
-    inputField.value = this.convertInputValue(lastInputValue) || "";
-
-    this.gameService.updateCell(this.row, this.column, inputField.value);
+    this.gameService.updateCell(this.row, this.column, this.cell.nativeElement.value);
   }
 
   constructor(
