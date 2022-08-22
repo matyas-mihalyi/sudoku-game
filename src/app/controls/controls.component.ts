@@ -39,7 +39,7 @@ export class ControlsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.gameService.isValid.subscribe(validity => {
+    this.gameService.validityObservable().subscribe(validity => {
       this.sudokuIsSolved = validity;
     });
 

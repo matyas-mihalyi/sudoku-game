@@ -18,7 +18,7 @@ export class SudokuService {
   
   public lowerClueLimitReached = new BehaviorSubject<boolean>(false);
   
-  public isValid = new BehaviorSubject<boolean>(false);
+  public validityObservable = () => this.isValid.asObservable()
   
   public startingSudokuObservable = () => this.startinSudokuSubject.asObservable();
   
@@ -51,8 +51,8 @@ export class SudokuService {
     private localStorageService: LocalStorageService
     ) {
       this.sudoku.asObservable().subscribe(this.validityObserver);
-  }
-  
+    }
+    
   private startingSudoku = generateSudoku(this.numberOfCellsToRemove);
 
   private sudoku = new BehaviorSubject<Sudoku>(JSON.parse(JSON.stringify(this.startingSudoku)));
@@ -60,8 +60,10 @@ export class SudokuService {
   private startinSudokuSubject = new BehaviorSubject<Sudoku>(this.startingSudoku);
   
   private maxNumberOfCellsToRemove = 64;
-  
+
   private minNumberOfCellsToRemove = 1;
+  
+  private isValid = new BehaviorSubject<boolean>(false);
   
   private validityObserver = {
     next: ( sudoku: Sudoku ) => {

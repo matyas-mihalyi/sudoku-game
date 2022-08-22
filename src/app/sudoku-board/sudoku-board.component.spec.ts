@@ -1,6 +1,6 @@
 import { BehaviorSubject } from 'rxjs';
 import { SudokuBoardComponent } from './sudoku-board.component';
-import { incompleteSudoku } from '../global-mocks';
+import { anotherIncompleteSudoku, incompleteSudoku } from '../global-mocks';
 import { QueryList } from '@angular/core';
 
 describe('SudokuBoardComponent', () => {
@@ -10,12 +10,17 @@ describe('SudokuBoardComponent', () => {
   let animationServiceMock: any;
   let navigationServiceMock: any;
 
+  let startingSudokuMock: any;
+  let validityMock: any;
+
   beforeEach(async () => {
+    startingSudokuMock = new BehaviorSubject(incompleteSudoku);
+    validityMock = new BehaviorSubject(false);
 
     gameServiceMock = {
       initSudoku: jest.fn(),
-      startingSudokuObservable: jest.fn().mockReturnValue(new BehaviorSubject(incompleteSudoku).asObservable()),
-      isValid: new BehaviorSubject<Boolean>(false)
+      startingSudokuObservable: jest.fn().mockReturnValue(startingSudokuMock.asObservable()),
+      validityObservable: jest.fn().mockReturnValue(validityMock.asObservable())
     };
 
     navigationServiceMock = {
@@ -61,8 +66,8 @@ describe('SudokuBoardComponent', () => {
         expect(fixture.sudoku).toBe(incompleteSudoku)
       });
 
-      it("should subscribe to gameService.isValid", ()=> {
-        const subscribe = jest.spyOn(gameServiceMock.isValid, "subscribe",);
+      it("should subscribe to gameService.validityObservable", ()=> {
+        const subscribe = jest.spyOn(gameServiceMock.validityObservable(), "subscribe",);
         fixture.ngOnInit();
   
         expect( subscribe ).toBeCalled();
@@ -113,6 +118,18 @@ describe('SudokuBoardComponent', () => {
 
     });
 
+  });
+
+  describe("Component behaviour", () => {
+
+    it("should update 'sudoku' variable if the BehaviourSubject changes", () => {
+      fixture.ngOnInit();
+      startingSudokuMock.next(anotherIncompleteSudoku);
+
+      expect(fixture.sudoku).toBe(anotherIncompleteSudoku);
+    });
+    
+    test.todo("should set the cells for navigationService if the sudoku variable changes")
   });
 
 

@@ -38,7 +38,7 @@ export class SudokuBoardComponent implements OnInit {
       this.sudoku = startingSudoku;
     });
 
-    this.gameService.isValid.subscribe(validity => {
+    this.gameService.validityObservable().subscribe(validity => {
       if (validity) {
        this.handleSudokuCompletion();
       }
