@@ -12,3 +12,5 @@ export interface CellIndices {
 }
 
 export type AnimationType = "finished" | "anotherOne" | "moreClues" | "lessClues";
+
+export type StorageKey = "numberOfCellsToRemove" | "startingSudoku" | "currentSudoku";

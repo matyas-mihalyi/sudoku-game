@@ -2,9 +2,8 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 import { LocalStorageRefService } from './local-storage-ref.service';
-import { Sudoku } from '../../types';
+import { Sudoku, StorageKey } from '../../types';
 
-type StorageKeys = "numberOfCellsToRemove" | "startingSudoku" | "currentSudoku";
 
 @Injectable({ providedIn: 'root' })
 export class LocalStorageService {
@@ -15,7 +14,7 @@ export class LocalStorageService {
   public startingSudoku$ = new BehaviorSubject<any>(null);
   public currentSudoku$ = new BehaviorSubject<any>(null);
 
-  private storageKeys: Array<StorageKeys> = ["numberOfCellsToRemove", "startingSudoku", "currentSudoku"];
+  private storageKeys: Array<StorageKey> = ["numberOfCellsToRemove", "startingSudoku", "currentSudoku"];
 
   public numberOfCellsToRemove = this.numberOfCellsToRemove$.asObservable();
   public startingSudoku = this.startingSudoku$.asObservable();
@@ -27,20 +26,20 @@ export class LocalStorageService {
     this._localStorage = this._localStorageRefService.localStorage
   }
 
-  setData(key: StorageKeys, data: Sudoku|number) {
+  setData(key: StorageKey, data: Sudoku|number) {
     const jsonData = JSON.stringify(data);
     this._localStorage.setItem(key, jsonData);
     this[`${key}$`].next(data);
     // console.log(`set data for ${key}`, this[`${key}$`].value)
   }
   
-  loadData(key: StorageKeys) {
+  loadData(key: StorageKey) {
     const jsonData = this._localStorage.getItem(key)
     const data = jsonData ? JSON.parse(jsonData) : null;
     this[`${key}$`].next(data);
   }
   
-  clearData(key: StorageKeys) {
+  clearData(key: StorageKey) {
     this._localStorage.setItem(key, "");
     this[`${key}$`].next(null);
     // console.log(`cleared ${key}`, this[`${key}$`].value)
@@ -57,10 +56,10 @@ export class LocalStorageService {
     }
   }
   
-  loadAllData () {
+  private loadAllData () {
     // console.log("Loaded all data")
     for (let key of this.storageKeys) {
-      this.loadData(key as StorageKeys);
+      this.loadData(key as StorageKey);
     }
   }
 
