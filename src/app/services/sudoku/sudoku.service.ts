@@ -4,7 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 import { generateSudoku, validateSudoku } from 'sudoku-logic';
 import { AnimationService } from '../animation/animation.service';
 import { LocalStorageService } from '../local-storage/local-storage.service';
-import { AnimationType, Sudoku } from '../../types';
+import { AnimationType, Sudoku, Cell } from '../../types';
 
 @Injectable({
   providedIn: 'root'
@@ -39,11 +39,24 @@ export class SudokuService {
       this.startingSudoku = this.localStorageService.startingSudoku$.value;
       this.startinSudokuSubject.next(this.localStorageService.startingSudoku$.value);
       this.sudoku.next(this.localStorageService.currentSudoku$.value);
+      this.numberOfCellsToRemove = this.localStorageService.numberOfCellsToRemove$.value || this.numberOfCellsToRemove;
     } else {
       console.log("Some data is missing")
+      this.numberOfCellsToRemove = this.localStorageService.numberOfCellsToRemove$.value || this.numberOfCellsToRemove;
       this.createNewSudoku();
     }
-    this.numberOfCellsToRemove = this.localStorageService.numberOfCellsToRemove$.value || this.numberOfCellsToRemove;
+  }
+  
+  public createSudokuWithMoreClues () {
+    this.removeLessCells();
+    this.animate("moreClues");
+    this.createNewSudoku();
+  }
+  
+  public createSudokuWithLessClues () {
+    this.removeMoreCells();
+    this.animate("lessClues");
+    this.createNewSudoku();
   }
   
   constructor(
@@ -126,16 +139,5 @@ export class SudokuService {
     }
   }
 
-  public createSudokuWithMoreClues () {
-    this.removeLessCells();
-    this.animate("moreClues");
-    this.createNewSudoku();
-  }
-  
-  public createSudokuWithLessClues () {
-    this.removeMoreCells();
-    this.animate("lessClues");
-    this.createNewSudoku();
-  }
 
 }
