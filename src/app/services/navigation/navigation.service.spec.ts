@@ -1,16 +1,32 @@
-import { TestBed } from '@angular/core/testing';
-
+import { BehaviorSubject } from 'rxjs';
+import { incompleteSudoku } from '../../global-mocks';
 import { NavigationService } from './navigation.service';
 
 describe('NavigationService', () => {
   let service: NavigationService;
+  let gameServiceMock: any;
 
+  let sudokuSubjectMock;
+  
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(NavigationService);
+    sudokuSubjectMock = new BehaviorSubject(incompleteSudoku);
+    
+    gameServiceMock = {
+      sudokuObservable: jest.fn().mockReturnValue(sudokuSubjectMock.asObservable())
+    }
+
+    service = new NavigationService(gameServiceMock);
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
+  describe("constructor", () => {
+
+    it("should call subscribe on gameService.sudokuObservable()", () => {
+      const subscribe = jest.spyOn(gameServiceMock.sudokuObservable(), "subscribe");
+      service = new NavigationService(gameServiceMock);
+
+      expect(subscribe).toBeCalled();
+    });
+
   });
+
 });
