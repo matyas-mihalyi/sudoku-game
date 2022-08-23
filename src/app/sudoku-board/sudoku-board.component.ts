@@ -1,8 +1,8 @@
 import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 
-import { AnimationService } from '../services/animation.service';
-import { NavigationService } from '../services/navigation.service';
-import { SudokuService } from '../services/sudoku.service';
+import { AnimationService } from '../services/animation/animation.service';
+import { NavigationService } from '../services/navigation/navigation.service';
+import { SudokuService } from '../services/sudoku/sudoku.service';
 import { CellIndices, Sudoku } from '../types';
 
 
@@ -38,7 +38,7 @@ export class SudokuBoardComponent implements OnInit {
       this.sudoku = startingSudoku;
     });
 
-    this.gameService.isValid.subscribe(validity => {
+    this.gameService.validityObservable().subscribe(validity => {
       if (validity) {
        this.handleSudokuCompletion();
       }

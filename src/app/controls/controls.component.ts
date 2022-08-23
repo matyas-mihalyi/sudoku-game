@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AnimationService } from '../services/animation.service';
-import { SudokuService } from '../services/sudoku.service';
+import { AnimationService } from '../services/animation/animation.service';
+import { SudokuService } from '../services/sudoku/sudoku.service';
 
 @Component({
   selector: 'app-controls',
@@ -39,7 +39,7 @@ export class ControlsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.gameService.isValid.subscribe(validity => {
+    this.gameService.validityObservable().subscribe(validity => {
       this.sudokuIsSolved = validity;
     });
 
