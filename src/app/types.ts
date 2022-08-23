@@ -1,4 +1,4 @@
-type Cell = number | undefined;
+export type Cell = number | null;
 
 export type ArrayOf9Elements<T> = [T, T, T, T, T, T, T, T, T];
 

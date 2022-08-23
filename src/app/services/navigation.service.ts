@@ -1,6 +1,6 @@
 import { Injectable, QueryList } from '@angular/core';
 import { SudokuService } from './sudoku.service';
-import { ArrayOf9Elements, CellIndices, Direction, Sudoku } from '../types';
+import { ArrayOf9Elements, CellIndices, Direction, Sudoku, Cell } from '../types';
 
 @Injectable({
   providedIn: 'root'
@@ -73,14 +73,14 @@ export class NavigationService {
     return previousIndexInSudoku; 
   } 
 
-  private getNextAvailableIndex = (arr: ArrayOf9Elements<number|undefined>, currentIndex: number): number => {
+  private getNextAvailableIndex = (arr: ArrayOf9Elements<Cell>, currentIndex: number): number => {
     return currentIndex + 1 < arr.length ?
     currentIndex + 1
     :
     0
   }
     
-  private getPreviousAvailableIndex = (arr: ArrayOf9Elements<number|undefined>, currentIndex: number): number => {
+  private getPreviousAvailableIndex = (arr: ArrayOf9Elements<Cell>, currentIndex: number): number => {
     return currentIndex - 1 >= 0 ?
     currentIndex - 1
     :
@@ -88,7 +88,7 @@ export class NavigationService {
   }
   
   private getColumnFromSudoku = (columnIndex: number) => {
-    return this.sudoku.map(row => row[columnIndex]) as ArrayOf9Elements<number|undefined>;
+    return this.sudoku.map(row => row[columnIndex]) as ArrayOf9Elements<Cell>;
   }
 
 }

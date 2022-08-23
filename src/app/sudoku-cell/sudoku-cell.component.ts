@@ -11,7 +11,7 @@ import { Sudoku } from '../types';
 })
 export class SudokuCellComponent implements OnInit {
 
-  @Input () number: number|undefined;
+  @Input () number: number|null = null;
   @Input () row!: number;
   @Input () column!: number;
 
