@@ -42,9 +42,7 @@ export class SudokuCellComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.localStorageService.currentSudoku.subscribe(sudoku => {
-      this.setValueFromLocalStorage(sudoku)
-    })
+      this.setValueFromLocalStorage(this.localStorageService.getCurrentSudoku())
   }
 
   private convertInputValue = (input: string) => {
@@ -58,7 +56,7 @@ export class SudokuCellComponent implements OnInit {
     this.cell.nativeElement.value = value;
   }
 
-  private setValueFromLocalStorage = (sudoku: Sudoku) => {
+  private setValueFromLocalStorage = (sudoku: Sudoku | null) => {
     if (sudoku && sudoku[this.row][this.column] !== null && sudoku[this.row][this.column] !== undefined) {
       setTimeout(()=> this.setValue(sudoku[this.row][this.column] as number)); 
     }

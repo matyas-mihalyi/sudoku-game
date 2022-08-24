@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AnimationService } from '../services/animation/animation.service';
+import { ClueService } from '../services/clue/clue.service';
 import { SudokuService } from '../services/sudoku/sudoku.service';
 
 @Component({
@@ -35,7 +36,8 @@ export class ControlsComponent implements OnInit {
 
   constructor(
     private gameService: SudokuService,
-    private animationService: AnimationService
+    private animationService: AnimationService,
+    private clueService: ClueService
   ) { }
 
   ngOnInit(): void {
@@ -43,9 +45,8 @@ export class ControlsComponent implements OnInit {
       this.sudokuIsSolved = validity;
     });
 
-    
-    this.gameService.lowerClueLimitReached.asObservable().subscribe(val => this.minCluesReached = val);
-    this.gameService.upperClueLimitReached.asObservable().subscribe(val => this.maxCluesReached = val);
+    this.clueService.lowerLimitReachedObservable.subscribe(val => this.minCluesReached = val);
+    this.clueService.upperLimitReachedObservable.subscribe(val => this.maxCluesReached = val);
   }
 
   private confirmNewSudoku (): void {

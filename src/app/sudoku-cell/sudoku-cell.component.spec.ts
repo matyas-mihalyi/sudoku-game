@@ -18,7 +18,7 @@ describe('SudokuCellComponent', () => {
 
   beforeEach(() => {
     localStorageServiceMock = {
-      currentSudoku: new BehaviorSubject(incompleteSudoku)
+      currentSudoku: incompleteSudoku
     }
 
     gameServiceMock = {
@@ -36,12 +36,8 @@ describe('SudokuCellComponent', () => {
 
     describe("ngOnInit", () => {
       
-      it("should call subscribe on localStorageService.currentSudoku", ()=> {
-        const subscribe = jest.spyOn(localStorageServiceMock.currentSudoku, "subscribe");
-        fixture.ngOnInit();
-        
-        expect(subscribe).toBeCalled();
-      })
+      test.todo("should update its value based on localStorage")
+
     });
 
     describe("ViewChild", () => {

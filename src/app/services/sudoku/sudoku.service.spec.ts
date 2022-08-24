@@ -2,12 +2,14 @@ import { incompleteSudoku } from "../../global-mocks";
 import { StorageKey } from "../../types";
 import { SudokuService } from "./sudoku.service";
 import { LocalStorageService } from "../local-storage/local-storage.service"
+import { BehaviorSubject } from "rxjs";
 
 describe("SudokuService", () => {
   let service: SudokuService
   
   let localStorageServiceMock: any;
   let animationServiceMock: any;
+  let clueServiceMock: any;
 
   let _localStorageRefService: any;
 
@@ -23,9 +25,18 @@ describe("SudokuService", () => {
       animate: jest.fn()
     }
 
+    let numberOfCellsToRemove = new BehaviorSubject(40);
+
+    clueServiceMock = {
+      removeLessCells: jest.fn(),
+      removeMoreCells: jest.fn(),
+      cellsToRemoveObservable: numberOfCellsToRemove.asObservable()
+    }
+
     service = new SudokuService(
       animationServiceMock,
-      localStorageServiceMock
+      localStorageServiceMock,
+      clueServiceMock
     );
   }); 
   
@@ -65,20 +76,10 @@ describe("SudokuService", () => {
         expect(startingSudokuInService).toStrictEqual(incompleteSudoku);
       });
 
-      it('should update the number of cells to remove based on data from localStorage if available', () => {
-        const numberOfCellsToRemove = 2;
-        
-        localStorage.setItem("numberOfCellsToRemove", JSON.stringify(numberOfCellsToRemove));
-
-        service.initSudoku();
-
-        expect(service.numberOfCellsToRemove).toBe(numberOfCellsToRemove);
-      });
-
       it('if no localStorage data is available from a previous sudoku it should set it', () => {
         service.initSudoku();
 
-        const storageKeys: StorageKey[] = ["currentSudoku", "startingSudoku", "numberOfCellsToRemove"];
+        const storageKeys: StorageKey[] = ["currentSudoku", "startingSudoku"];
 
         for (let key of storageKeys) {
           const dataInLocalStorage = localStorage.getItem(key);
@@ -90,33 +91,13 @@ describe("SudokuService", () => {
     });
 
     describe('createSudokuWithMoreClues', () => {
-      it('should change the "numberOfCellsToRemove" property to one less than before', () => {
-        const oldValue = JSON.parse(JSON.stringify(service.numberOfCellsToRemove));
-        const expected = oldValue - 1; 
+
+      it('should call "clueService.removeLessCells"', () => {
+        const removeLessCells = jest.spyOn(clueServiceMock, "removeLessCells");
+        
         service.createSudokuWithMoreClues();
 
-        expect(service.numberOfCellsToRemove).toBe(expected);
-      });
-      
-      it('it should set the new value for "numberOfCellsToRemove" in localStorage', () => {
-        const oldValue = JSON.parse(JSON.stringify(service.numberOfCellsToRemove));
-        const expected = oldValue - 1;
-
-        service.createSudokuWithMoreClues();
-
-        const dataInLocalStorage = JSON.parse(localStorage.getItem("numberOfCellsToRemove")!);
-  
-        expect(dataInLocalStorage).toBe(expected);
-      });
-
-      it('should not change the value of "numberOfCellsToRemove" to less than 1', () => {
-        localStorage.setItem("numberOfCellsToRemove", "1");
-        service.initSudoku();
-
-        service.createSudokuWithMoreClues();
-
-        expect(service.numberOfCellsToRemove).toBe(1);
-
+        expect(removeLessCells).toBeCalled();
       });
 
       it('should call "createNewSudoku"', () => {
@@ -128,33 +109,12 @@ describe("SudokuService", () => {
     });
     
     describe('createSudokuWithLessClues', () => {
-      it('should change the "numberOfCellsToRemove" property to one less than before', () => {
-        const oldValue = JSON.parse(JSON.stringify(service.numberOfCellsToRemove));
-        const expected = oldValue + 1; 
-        service.createSudokuWithLessClues();
-        
-        expect(service.numberOfCellsToRemove).toBe(expected);
-      });
-      
-      it('it should set the new value for "numberOfCellsToRemove" in localStorage', () => {
-        const oldValue = JSON.parse(JSON.stringify(service.numberOfCellsToRemove));
-        const expected = oldValue + 1;
+      it('should call "clueService.removeMoreCells"', () => {
+        const removeMoreCells = jest.spyOn(clueServiceMock, "removeMoreCells");
         
         service.createSudokuWithLessClues();
-        
-        const dataInLocalStorage = JSON.parse(localStorage.getItem("numberOfCellsToRemove")!);
-        
-        expect(dataInLocalStorage).toBe(expected);
-      });
-      
-      it('should not change the value of "numberOfCellsToRemove" to more than 64', () => {
-        localStorage.setItem("numberOfCellsToRemove", "64");
-        service.initSudoku();
-        
-        service.createSudokuWithLessClues();
-        
-        expect(service.numberOfCellsToRemove).toBe(64);
-        
+
+        expect(removeMoreCells).toBeCalled();
       });
 
       it('should call "createNewSudoku"', () => {
