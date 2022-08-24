@@ -5,6 +5,7 @@ import { generateSudoku, validateSudoku } from 'sudoku-logic';
 import { AnimationService } from '../animation/animation.service';
 import { LocalStorageService } from '../local-storage/local-storage.service';
 import { AnimationType, Sudoku, Cell } from '../../types';
+import { ClueService } from '../clue/clue.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,11 +13,6 @@ import { AnimationType, Sudoku, Cell } from '../../types';
 
 export class SudokuService {
 
-  public numberOfCellsToRemove = 31;
-  
-  public upperClueLimitReached = new BehaviorSubject<boolean>(false);
-  
-  public lowerClueLimitReached = new BehaviorSubject<boolean>(false);
   
   public validityObservable = () => this.isValid.asObservable()
   
@@ -32,7 +28,7 @@ export class SudokuService {
     this.sudoku.next(updatedSudoku);
     this.localStorageService.setData("currentSudoku", updatedSudoku);
   }
-
+  
   public initSudoku = () => {
     if (this.localStorageService.sudokuDataIsAvailable()) {
       this.setupSudokuFromLocalStroage();
@@ -43,34 +39,34 @@ export class SudokuService {
   }
   
   public createSudokuWithMoreClues () {
-    this.removeLessCells();
+    this.clueService.removeLessCells();
     this.animate("moreClues");
     this.createNewSudoku();
   }
   
   public createSudokuWithLessClues () {
-    this.removeMoreCells();
+    this.clueService.removeMoreCells();
     this.animate("lessClues");
     this.createNewSudoku();
   }
   
   constructor(
     private animationService: AnimationService,
-    private localStorageService: LocalStorageService
+    private localStorageService: LocalStorageService,
+    private clueService: ClueService
     ) {
       this.sudoku.asObservable().subscribe(this.validityObserver);
+      this.clueService.cellsToRemoveObservable.subscribe(val => this.numberOfCellsToRemove = val);
     }
     
-  private startingSudoku = generateSudoku(this.numberOfCellsToRemove);
+    private numberOfCellsToRemove = 31;
 
-  private sudoku = new BehaviorSubject<Sudoku>(JSON.parse(JSON.stringify(this.startingSudoku)));
-
-  private startinSudokuSubject = new BehaviorSubject<Sudoku>(this.startingSudoku);
-  
-  private maxNumberOfCellsToRemove = 64;
-
-  private minNumberOfCellsToRemove = 1;
-  
+    private startingSudoku = generateSudoku(this.numberOfCellsToRemove);
+    
+    private sudoku = new BehaviorSubject<Sudoku>(JSON.parse(JSON.stringify(this.startingSudoku)));
+    
+    private startinSudokuSubject = new BehaviorSubject<Sudoku>(this.startingSudoku);
+    
   private isValid = new BehaviorSubject<boolean>(false);
   
   private validityObserver = {
@@ -94,7 +90,6 @@ export class SudokuService {
   private setNewSudokuInLocalStorage () {
     this.localStorageService.setData("startingSudoku", this.startingSudoku);
     this.localStorageService.setData("currentSudoku", this.startingSudoku);
-    this.localStorageService.setData("numberOfCellsToRemove", this.numberOfCellsToRemove);
   }
   
   private setupNewSudoku () {
@@ -108,48 +103,11 @@ export class SudokuService {
     this.startingSudoku = this.localStorageService.getStartingSudoku()!;
     this.startinSudokuSubject.next(this.localStorageService.getStartingSudoku()!);
     this.sudoku.next(this.localStorageService.getCurrentSudoku()!);
-    this.numberOfCellsToRemove = this.localStorageService.getNumberOfCellsToRemove() || this.numberOfCellsToRemove;
   }
   
   public createNewSudoku () {
     this.setupNewSudoku();
     this.setNewSudokuInLocalStorage();
-  }
-
-  private decrementCellsToRemove () {
-    if (this.numberOfCellsToRemove > this.minNumberOfCellsToRemove) {
-      this.numberOfCellsToRemove = this.numberOfCellsToRemove - 1;
-      this.lowerClueLimitReached.next(false);
-    } 
-  }
-
-  private incrementCellsToRemove () {
-    if (this.numberOfCellsToRemove < this.maxNumberOfCellsToRemove) {
-      this.numberOfCellsToRemove = this.numberOfCellsToRemove + 1;
-      this.upperClueLimitReached.next(false);
-    } 
-  }
-
-  private checkUpperLimit () {
-    if (this.numberOfCellsToRemove === this.minNumberOfCellsToRemove) {
-      this.upperClueLimitReached.next(true);
-    }
-  }
-
-  private checkLowerLimit () {
-    if (this.numberOfCellsToRemove === this.maxNumberOfCellsToRemove) {
-      this.lowerClueLimitReached.next(true);
-    }
-  }
-  
-  private removeLessCells () {
-    this.decrementCellsToRemove();
-    this.checkUpperLimit();
-  }
-  
-  private removeMoreCells () {
-    this.incrementCellsToRemove();
-    this.checkLowerLimit();
   }
   
   private animate = (str: AnimationType) => {
