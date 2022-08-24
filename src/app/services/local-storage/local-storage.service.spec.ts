@@ -34,25 +34,26 @@ describe('LocalStorageService', () => {
       it('should set the given data under the provided key in localStorage', () => {
         const dataInLocalStorage = JSON.parse(localStorage.getItem(key)!);
         
-        expect(dataInLocalStorage).toStrictEqual(data)
+        expect(dataInLocalStorage).toStrictEqual(data);
       });
       
-      it('should set the given data to its BehaviourSubject', () => {
-        expect(service[`${key}$`].value).toStrictEqual(data);
+      it('should set the given data to its service variable', () => {
+        console.log(Object.keys(service))
+        expect(service[key]).toStrictEqual(data);
       });
       
     });
 
     describe('loadData', () => {
       
-      it('should load the data with the given key to its BehaviourSubject', () => {
+      it('should load the data with the given key to its service variable', () => {
         const data = incompleteSudoku;
         const key = "startingSudoku";
         
         localStorage.setItem(key, JSON.stringify(data));
         service.loadData(key);
         
-        expect(service[`${key}$`].value).toStrictEqual(data);
+        expect(service[key]).toStrictEqual(data);
       });
 
     });
@@ -78,15 +79,15 @@ describe('LocalStorageService', () => {
         expect(dataInLocalStorage).toBe("");
       });
 
-      it('should clear the data with the given key from its BehaviourSubject', () => {
+      it('should clear the data with the given key from its service variable', () => {
         service.clearData(key);
         
-        expect(service[`${key}$`].value).toBe(null);
+        expect(service[key]).toBe(null);
       });
 
     });
 
-    describe('sudokuDataAvailable', () => {
+    describe('sudokuDataIsAvailable', () => {
       let data: any;
       let storageKeys: StorageKey[];
 
@@ -107,10 +108,10 @@ describe('LocalStorageService', () => {
           localStorage.setItem(key, JSON.stringify(data[key]));
         }
         
-        service.sudokuDataAvailable();
+        service.sudokuDataIsAvailable();
         
         for (let key of storageKeys) {
-          expect(service[`${key}$`].value).toStrictEqual(data[key]);
+          expect(service[key]).toStrictEqual(data[key]);
         }
       });
       
@@ -120,20 +121,19 @@ describe('LocalStorageService', () => {
           localStorage.setItem(key, JSON.stringify(data[key]));
         }
         
-        expect(service.sudokuDataAvailable()).toBeTruthy();
+        expect(service.sudokuDataIsAvailable()).toBeTruthy();
       });
 
       it('should return "false" if "currentSudoku" is missing from localStorage', () => {
         localStorage.setItem("startingSudoku", JSON.stringify(data.startingSudoku));
-        console.log(localStorage.getItem("currentSudoku"))
 
-        expect(service.sudokuDataAvailable()).toBeFalsy();
+        expect(service.sudokuDataIsAvailable()).toBeFalsy();
       });
 
       it('should return "false" if "startingSudoku" is missing from localStorage', () => {
         localStorage.setItem("currentSudoku", JSON.stringify(data.currentSudoku));
       
-        expect(service.sudokuDataAvailable()).toBeFalsy();
+        expect(service.sudokuDataIsAvailable()).toBeFalsy();
       });
     
     });

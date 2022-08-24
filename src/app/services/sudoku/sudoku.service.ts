@@ -34,15 +34,10 @@ export class SudokuService {
   }
 
   public initSudoku = () => {
-    if (this.localStorageService.sudokuDataAvailable()) {
-      console.log("Data found")
-      this.startingSudoku = this.localStorageService.startingSudoku$.value;
-      this.startinSudokuSubject.next(this.localStorageService.startingSudoku$.value);
-      this.sudoku.next(this.localStorageService.currentSudoku$.value);
-      this.numberOfCellsToRemove = this.localStorageService.numberOfCellsToRemove$.value || this.numberOfCellsToRemove;
+    if (this.localStorageService.sudokuDataIsAvailable()) {
+      this.setupSudokuFromLocalStroage();
     } else {
-      console.log("Some data is missing")
-      this.numberOfCellsToRemove = this.localStorageService.numberOfCellsToRemove$.value || this.numberOfCellsToRemove;
+      this.numberOfCellsToRemove = this.localStorageService.getNumberOfCellsToRemove() || this.numberOfCellsToRemove;
       this.createNewSudoku();
     }
   }
@@ -86,13 +81,6 @@ export class SudokuService {
     }
   }
   
-  private convertInputValue = (input: string): Cell => {
-    return input === "" ?
-    null
-    :
-    Number(input)
-  }
-  
   private sudokuIsFilled = (sudoku: Sudoku) => sudoku.flat().filter(cell => cell == (undefined || null)).length === 0;
   
   private checkSudokuValidity = (sudoku: Sudoku) => validateSudoku(sudoku);
@@ -103,41 +91,73 @@ export class SudokuService {
     this.isValid.next(true);
   }
 
-  public createNewSudoku () {
-    this.startingSudoku = generateSudoku(this.numberOfCellsToRemove);
-    this.startinSudokuSubject.next(this.startingSudoku);
-    this.sudoku.next(JSON.parse(JSON.stringify(this.startingSudoku)));
+  private setNewSudokuInLocalStorage () {
     this.localStorageService.setData("startingSudoku", this.startingSudoku);
     this.localStorageService.setData("currentSudoku", this.startingSudoku);
     this.localStorageService.setData("numberOfCellsToRemove", this.numberOfCellsToRemove);
-    this.isValid.next(false)
   }
   
-  private removeLessCells () {
+  private setupNewSudoku () {
+    this.startingSudoku = generateSudoku(this.numberOfCellsToRemove);
+    this.startinSudokuSubject.next(this.startingSudoku);
+    this.sudoku.next(JSON.parse(JSON.stringify(this.startingSudoku)));
+    this.isValid.next(false);
+  }
+  
+  private setupSudokuFromLocalStroage () {
+    this.startingSudoku = this.localStorageService.getStartingSudoku()!;
+    this.startinSudokuSubject.next(this.localStorageService.getStartingSudoku()!);
+    this.sudoku.next(this.localStorageService.getCurrentSudoku()!);
+    this.numberOfCellsToRemove = this.localStorageService.getNumberOfCellsToRemove() || this.numberOfCellsToRemove;
+  }
+  
+  public createNewSudoku () {
+    this.setupNewSudoku();
+    this.setNewSudokuInLocalStorage();
+  }
+
+  private decrementCellsToRemove () {
     if (this.numberOfCellsToRemove > this.minNumberOfCellsToRemove) {
       this.numberOfCellsToRemove = this.numberOfCellsToRemove - 1;
       this.lowerClueLimitReached.next(false);
     } 
-    if (this.numberOfCellsToRemove === this.minNumberOfCellsToRemove) {
-      this.upperClueLimitReached.next(true);
-    }
   }
-  
-  private removeMoreCells () {
+
+  private incrementCellsToRemove () {
     if (this.numberOfCellsToRemove < this.maxNumberOfCellsToRemove) {
       this.numberOfCellsToRemove = this.numberOfCellsToRemove + 1;
       this.upperClueLimitReached.next(false);
     } 
+  }
+
+  private checkUpperLimit () {
+    if (this.numberOfCellsToRemove === this.minNumberOfCellsToRemove) {
+      this.upperClueLimitReached.next(true);
+    }
+  }
+
+  private checkLowerLimit () {
     if (this.numberOfCellsToRemove === this.maxNumberOfCellsToRemove) {
       this.lowerClueLimitReached.next(true);
     }
   }
-
+  
+  private removeLessCells () {
+    this.decrementCellsToRemove();
+    this.checkUpperLimit();
+  }
+  
+  private removeMoreCells () {
+    this.incrementCellsToRemove();
+    this.checkLowerLimit();
+  }
+  
   private animate = (str: AnimationType) => {
     if (this.numberOfCellsToRemove % 5 === 0) {
       this.animationService.animate(str);
     }
   }
-
-
+  
+  private convertInputValue = (input: string): Cell => input === "" ? null : Number(input);
+  
 }
